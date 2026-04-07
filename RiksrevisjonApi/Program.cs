@@ -16,6 +16,7 @@ builder.Services.AddHttpClient("rr", c =>
 });
 
 builder.Services.AddSingleton<ReportService>();
+builder.Services.AddSingleton<DoffinService>();
 
 var app = builder.Build();
 app.UseCors();
@@ -23,11 +24,23 @@ app.UseCors();
 var svc = app.Services.GetRequiredService<ReportService>();
 _ = svc.LoadAsync();
 
+var doffinSvc = app.Services.GetRequiredService<DoffinService>();
+_ = doffinSvc.LoadAsync();
+
 app.MapGet("/api/reports", (ReportService s) =>
     Results.Ok(new { loading = s.IsLoading, reports = s.Reports }));
 
 // Force a fresh scrape (ignores cache)
 app.MapPost("/api/reports/refresh", async (ReportService s) =>
+{
+    _ = s.LoadAsync(forceRefresh: true);
+    return Results.Accepted();
+});
+
+app.MapGet("/api/notices", (DoffinService s) =>
+    Results.Ok(new { loading = s.IsLoading, notices = s.Notices }));
+
+app.MapPost("/api/notices/refresh", async (DoffinService s) =>
 {
     _ = s.LoadAsync(forceRefresh: true);
     return Results.Accepted();
