@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RiksrevisjonApi.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+02c4a93547793b5ad6ce4239fae510c0947bf114")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c8f870ebd36e51c40051fb72329fc08e71a2aa3")]
 [assembly: System.Reflection.AssemblyProductAttribute("RiksrevisjonApi.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RiksrevisjonApi.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

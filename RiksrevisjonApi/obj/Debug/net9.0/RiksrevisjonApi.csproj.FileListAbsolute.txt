@@ -1,0 +1,775 @@
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\appsettings.Development.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\appsettings.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\RiksrevisjonApi.staticwebassets.endpoints.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\RiksrevisjonApi.exe
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\RiksrevisjonApi.deps.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\RiksrevisjonApi.runtimeconfig.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\RiksrevisjonApi.dll
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\RiksrevisjonApi.pdb
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.AssemblyInfoInputs.cache
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.AssemblyInfo.cs
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.csproj.CoreCompileInputs.cache
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.MvcApplicationPartsAssemblyInfo.cache
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\scopedcss\bundle\RiksrevisjonApi.styles.css
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\staticwebassets.build.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\staticwebassets.development.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.dll
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\refint\RiksrevisjonApi.dll
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.pdb
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.genruntimeconfig.cache
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\ref\RiksrevisjonApi.dll
+C:\Temp\RrApiPw\appsettings.Development.json
+C:\Temp\RrApiPw\appsettings.json
+C:\Temp\RrApiPw\.playwright\node\win32_x64\node.exe
+C:\Temp\RrApiPw\.playwright\node\LICENSE
+C:\Temp\RrApiPw\.playwright\package\api.json
+C:\Temp\RrApiPw\.playwright\package\bin\install_media_pack.ps1
+C:\Temp\RrApiPw\.playwright\package\bin\install_webkit_wsl.ps1
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_chrome_beta_linux.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_chrome_beta_mac.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_chrome_beta_win.ps1
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_chrome_stable_linux.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_chrome_stable_mac.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_chrome_stable_win.ps1
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_beta_linux.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_beta_mac.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_beta_win.ps1
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_dev_linux.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_dev_mac.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_dev_win.ps1
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_stable_linux.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_stable_mac.sh
+C:\Temp\RrApiPw\.playwright\package\bin\reinstall_msedge_stable_win.ps1
+C:\Temp\RrApiPw\.playwright\package\browsers.json
+C:\Temp\RrApiPw\.playwright\package\cli.js
+C:\Temp\RrApiPw\.playwright\package\index.d.ts
+C:\Temp\RrApiPw\.playwright\package\index.js
+C:\Temp\RrApiPw\.playwright\package\index.mjs
+C:\Temp\RrApiPw\.playwright\package\lib\androidServerImpl.js
+C:\Temp\RrApiPw\.playwright\package\lib\browserServerImpl.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\android.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\api.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\artifact.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\browser.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\browserContext.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\browserType.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\cdpSession.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\channelOwner.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\clientHelper.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\clientInstrumentation.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\clientStackTrace.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\clock.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\connection.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\consoleMessage.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\coverage.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\dialog.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\download.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\electron.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\elementHandle.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\errors.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\eventEmitter.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\events.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\fetch.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\fileChooser.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\fileUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\frame.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\harRouter.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\input.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\jsHandle.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\jsonPipe.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\localUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\locator.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\network.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\page.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\pageAgent.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\platform.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\playwright.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\selectors.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\stream.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\timeoutSettings.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\tracing.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\types.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\video.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\waiter.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\webError.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\webSocket.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\worker.js
+C:\Temp\RrApiPw\.playwright\package\lib\client\writableStream.js
+C:\Temp\RrApiPw\.playwright\package\lib\cli\driver.js
+C:\Temp\RrApiPw\.playwright\package\lib\cli\program.js
+C:\Temp\RrApiPw\.playwright\package\lib\cli\programWithTestStub.js
+C:\Temp\RrApiPw\.playwright\package\lib\generated\bindingsControllerSource.js
+C:\Temp\RrApiPw\.playwright\package\lib\generated\clockSource.js
+C:\Temp\RrApiPw\.playwright\package\lib\generated\injectedScriptSource.js
+C:\Temp\RrApiPw\.playwright\package\lib\generated\pollingRecorderSource.js
+C:\Temp\RrApiPw\.playwright\package\lib\generated\storageScriptSource.js
+C:\Temp\RrApiPw\.playwright\package\lib\generated\utilityScriptSource.js
+C:\Temp\RrApiPw\.playwright\package\lib\generated\webSocketMockSource.js
+C:\Temp\RrApiPw\.playwright\package\lib\inprocess.js
+C:\Temp\RrApiPw\.playwright\package\lib\inProcessFactory.js
+C:\Temp\RrApiPw\.playwright\package\lib\mcpBundle.js
+C:\Temp\RrApiPw\.playwright\package\lib\mcpBundleImpl\index.js
+C:\Temp\RrApiPw\.playwright\package\lib\outofprocess.js
+C:\Temp\RrApiPw\.playwright\package\lib\protocol\serializers.js
+C:\Temp\RrApiPw\.playwright\package\lib\protocol\validator.js
+C:\Temp\RrApiPw\.playwright\package\lib\protocol\validatorPrimitives.js
+C:\Temp\RrApiPw\.playwright\package\lib\remote\playwrightConnection.js
+C:\Temp\RrApiPw\.playwright\package\lib\remote\playwrightServer.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\agent\actionRunner.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\agent\actions.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\agent\codegen.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\agent\context.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\agent\expectTools.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\agent\pageAgent.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\agent\performTools.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\agent\tool.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\android\android.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\android\backendAdb.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\artifact.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiBrowser.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiChromium.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiConnection.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiDeserializer.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiExecutionContext.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiFirefox.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiInput.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiNetworkManager.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiOverCdp.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiPage.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\bidiPdf.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\third_party\bidiCommands.d.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\third_party\bidiKeyboard.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\third_party\bidiProtocol.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\third_party\bidiProtocolCore.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\third_party\bidiProtocolPermissions.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\third_party\bidiSerializer.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\bidi\third_party\firefoxPrefs.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\browser.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\browserContext.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\browserType.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\callLog.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\appIcon.png
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\chromium.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\chromiumSwitches.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crBrowser.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crConnection.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crCoverage.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crDevTools.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crDragDrop.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crExecutionContext.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crInput.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crNetworkManager.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crPage.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crPdf.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crProtocolHelper.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\crServiceWorker.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\defaultFontFamilies.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\chromium\protocol.d.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\clock.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\codegen\csharp.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\codegen\java.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\codegen\javascript.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\codegen\jsonl.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\codegen\language.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\codegen\languages.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\codegen\python.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\codegen\types.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\console.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\cookieStore.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\debugController.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\debugger.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\deviceDescriptors.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\deviceDescriptorsSource.json
+C:\Temp\RrApiPw\.playwright\package\lib\server\dialog.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\androidDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\artifactDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\browserContextDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\browserDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\browserTypeDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\cdpSessionDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\debugControllerDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\dialogDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\dispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\electronDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\elementHandlerDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\frameDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\jsHandleDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\jsonPipeDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\localUtilsDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\networkDispatchers.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\pageAgentDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\pageDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\playwrightDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\streamDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\tracingDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\webSocketRouteDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dispatchers\writableStreamDispatcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\dom.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\download.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\electron\electron.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\electron\loader.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\errors.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\fetch.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\fileChooser.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\fileUploadUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\firefox\ffBrowser.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\firefox\ffConnection.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\firefox\ffExecutionContext.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\firefox\ffInput.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\firefox\ffNetworkManager.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\firefox\ffPage.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\firefox\firefox.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\firefox\protocol.d.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\formData.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\frames.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\frameSelectors.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\harBackend.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\har\harRecorder.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\har\harTracer.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\helper.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\index.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\input.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\instrumentation.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\javascript.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\launchApp.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\localUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\macEditingCommands.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\network.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\page.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\pipeTransport.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\playwright.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\progress.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\protocolError.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\recorder.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\recorder\chat.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\recorder\recorderApp.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\recorder\recorderRunner.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\recorder\recorderSignalProcessor.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\recorder\recorderUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\recorder\throttledFile.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\registry\browserFetcher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\registry\dependencies.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\registry\index.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\registry\nativeDeps.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\registry\oopDownloadBrowserMain.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\screencast.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\screenshotter.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\selectors.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\socksClientCertificatesInterceptor.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\socksInterceptor.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\trace\recorder\snapshotter.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\trace\recorder\snapshotterInjected.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\trace\recorder\tracing.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\trace\viewer\traceParser.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\trace\viewer\traceViewer.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\transport.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\types.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\usKeyboardLayout.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\ascii.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\comparators.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\crypto.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\debug.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\debugLogger.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\env.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\eventsHelper.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\expectUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\fileUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\happyEyeballs.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\hostPlatform.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\httpServer.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\imageUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\image_tools\colorUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\image_tools\compare.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\image_tools\imageChannel.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\image_tools\stats.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\linuxUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\network.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\nodePlatform.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\pipeTransport.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\processLauncher.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\profiler.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\socksProxy.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\spawnAsync.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\task.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\userAgent.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\wsServer.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\zipFile.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\utils\zones.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\videoRecorder.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\protocol.d.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\webkit.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\wkBrowser.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\wkConnection.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\wkExecutionContext.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\wkInput.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\wkInterceptableRequest.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\wkPage.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\wkProvisionalPage.js
+C:\Temp\RrApiPw\.playwright\package\lib\server\webkit\wkWorkers.js
+C:\Temp\RrApiPw\.playwright\package\lib\third_party\pixelmatch.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils.js
+C:\Temp\RrApiPw\.playwright\package\lib\utilsBundle.js
+C:\Temp\RrApiPw\.playwright\package\lib\utilsBundleImpl\index.js
+C:\Temp\RrApiPw\.playwright\package\lib\utilsBundleImpl\xdg-open
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\ariaSnapshot.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\assert.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\colors.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\cssParser.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\cssTokenizer.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\headers.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\locatorGenerators.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\locatorParser.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\locatorUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\lruCache.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\manualPromise.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\mimeType.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\multimap.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\protocolFormatter.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\protocolMetainfo.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\rtti.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\selectorParser.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\semaphore.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\stackTrace.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\stringUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\time.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\timeoutRunner.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\traceUtils.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\entries.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\snapshotRenderer.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\snapshotServer.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\snapshotStorage.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\traceLoader.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\traceModel.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\traceModernizer.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\versions\traceV3.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\versions\traceV4.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\versions\traceV5.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\versions\traceV6.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\versions\traceV7.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\trace\versions\traceV8.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\types.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\urlMatch.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\utilityScriptSerializers.js
+C:\Temp\RrApiPw\.playwright\package\lib\utils\isomorphic\yaml.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\htmlReport\index.html
+C:\Temp\RrApiPw\.playwright\package\lib\vite\recorder\assets\codeMirrorModule-DadYNm1I.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\recorder\assets\codeMirrorModule-DYBRYzYX.css
+C:\Temp\RrApiPw\.playwright\package\lib\vite\recorder\assets\codicon-DCmgc-ay.ttf
+C:\Temp\RrApiPw\.playwright\package\lib\vite\recorder\assets\index-BhTWtUlo.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\recorder\assets\index-BSjZa4pk.css
+C:\Temp\RrApiPw\.playwright\package\lib\vite\recorder\index.html
+C:\Temp\RrApiPw\.playwright\package\lib\vite\recorder\playwright-logo.svg
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\assets\codeMirrorModule-a5XoALAZ.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\assets\defaultSettingsView-CJSZINFr.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\assets\xtermModule-CsJ4vdCR.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\codeMirrorModule.DYBRYzYX.css
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\codicon.DCmgc-ay.ttf
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\defaultSettingsView.7ch9cixO.css
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\index.BiGyQqiM.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\index.BVu7tZDe.css
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\index.html
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\manifest.webmanifest
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\playwright-logo.svg
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\snapshot.html
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\sw.bundle.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\uiMode.Btcz36p_.css
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\uiMode.CQJ9SCIQ.js
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\uiMode.html
+C:\Temp\RrApiPw\.playwright\package\lib\vite\traceViewer\xtermModule.DYP7pi_n.css
+C:\Temp\RrApiPw\.playwright\package\lib\zipBundle.js
+C:\Temp\RrApiPw\.playwright\package\lib\zipBundleImpl.js
+C:\Temp\RrApiPw\.playwright\package\LICENSE
+C:\Temp\RrApiPw\.playwright\package\NOTICE
+C:\Temp\RrApiPw\.playwright\package\package.json
+C:\Temp\RrApiPw\.playwright\package\protocol.yml
+C:\Temp\RrApiPw\.playwright\package\README.md
+C:\Temp\RrApiPw\.playwright\package\ThirdPartyNotices.txt
+C:\Temp\RrApiPw\.playwright\package\types\protocol.d.ts
+C:\Temp\RrApiPw\.playwright\package\types\structs.d.ts
+C:\Temp\RrApiPw\.playwright\package\types\types.d.ts
+C:\Temp\RrApiPw\playwright.ps1
+C:\Temp\RrApiPw\RiksrevisjonApi.staticwebassets.endpoints.json
+C:\Temp\RrApiPw\RiksrevisjonApi.exe
+C:\Temp\RrApiPw\RiksrevisjonApi.deps.json
+C:\Temp\RrApiPw\RiksrevisjonApi.runtimeconfig.json
+C:\Temp\RrApiPw\RiksrevisjonApi.dll
+C:\Temp\RrApiPw\RiksrevisjonApi.pdb
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\RiksrevisjonApi.csproj.AssemblyReference.cache
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\obj\Debug\net9.0\Riksrevi.03083B60.Up2Date
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\node\win32_x64\node.exe
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\node\LICENSE
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\api.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\install_media_pack.ps1
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\install_webkit_wsl.ps1
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_chrome_beta_linux.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_chrome_beta_mac.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_chrome_beta_win.ps1
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_chrome_stable_linux.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_chrome_stable_mac.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_chrome_stable_win.ps1
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_beta_linux.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_beta_mac.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_beta_win.ps1
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_dev_linux.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_dev_mac.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_dev_win.ps1
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_stable_linux.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_stable_mac.sh
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\bin\reinstall_msedge_stable_win.ps1
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\browsers.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\cli.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\index.d.ts
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\index.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\index.mjs
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\androidServerImpl.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\browserServerImpl.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\android.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\api.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\artifact.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\browser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\browserContext.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\browserType.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\cdpSession.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\channelOwner.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\clientHelper.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\clientInstrumentation.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\clientStackTrace.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\clock.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\connection.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\consoleMessage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\coverage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\dialog.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\download.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\electron.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\elementHandle.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\errors.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\eventEmitter.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\events.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\fetch.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\fileChooser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\fileUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\frame.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\harRouter.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\input.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\jsHandle.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\jsonPipe.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\localUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\locator.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\network.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\page.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\pageAgent.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\platform.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\playwright.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\selectors.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\stream.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\timeoutSettings.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\tracing.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\types.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\video.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\waiter.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\webError.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\webSocket.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\worker.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\client\writableStream.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\cli\driver.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\cli\program.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\cli\programWithTestStub.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\generated\bindingsControllerSource.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\generated\clockSource.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\generated\injectedScriptSource.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\generated\pollingRecorderSource.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\generated\storageScriptSource.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\generated\utilityScriptSource.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\generated\webSocketMockSource.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\inprocess.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\inProcessFactory.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\mcpBundle.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\mcpBundleImpl\index.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\outofprocess.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\protocol\serializers.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\protocol\validator.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\protocol\validatorPrimitives.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\remote\playwrightConnection.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\remote\playwrightServer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\agent\actionRunner.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\agent\actions.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\agent\codegen.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\agent\context.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\agent\expectTools.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\agent\pageAgent.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\agent\performTools.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\agent\tool.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\android\android.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\android\backendAdb.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\artifact.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiBrowser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiChromium.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiConnection.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiDeserializer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiExecutionContext.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiFirefox.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiInput.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiNetworkManager.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiOverCdp.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiPage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\bidiPdf.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\third_party\bidiCommands.d.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\third_party\bidiKeyboard.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\third_party\bidiProtocol.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\third_party\bidiProtocolCore.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\third_party\bidiProtocolPermissions.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\third_party\bidiSerializer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\bidi\third_party\firefoxPrefs.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\browser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\browserContext.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\browserType.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\callLog.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\appIcon.png
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\chromium.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\chromiumSwitches.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crBrowser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crConnection.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crCoverage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crDevTools.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crDragDrop.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crExecutionContext.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crInput.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crNetworkManager.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crPage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crPdf.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crProtocolHelper.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\crServiceWorker.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\defaultFontFamilies.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\chromium\protocol.d.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\clock.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\codegen\csharp.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\codegen\java.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\codegen\javascript.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\codegen\jsonl.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\codegen\language.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\codegen\languages.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\codegen\python.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\codegen\types.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\console.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\cookieStore.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\debugController.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\debugger.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\deviceDescriptors.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\deviceDescriptorsSource.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dialog.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\androidDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\artifactDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\browserContextDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\browserDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\browserTypeDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\cdpSessionDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\debugControllerDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\dialogDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\dispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\electronDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\elementHandlerDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\frameDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\jsHandleDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\jsonPipeDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\localUtilsDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\networkDispatchers.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\pageAgentDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\pageDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\playwrightDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\streamDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\tracingDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\webSocketRouteDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dispatchers\writableStreamDispatcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\dom.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\download.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\electron\electron.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\electron\loader.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\errors.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\fetch.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\fileChooser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\fileUploadUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\firefox\ffBrowser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\firefox\ffConnection.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\firefox\ffExecutionContext.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\firefox\ffInput.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\firefox\ffNetworkManager.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\firefox\ffPage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\firefox\firefox.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\firefox\protocol.d.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\formData.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\frames.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\frameSelectors.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\harBackend.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\har\harRecorder.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\har\harTracer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\helper.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\index.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\input.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\instrumentation.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\javascript.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\launchApp.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\localUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\macEditingCommands.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\network.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\page.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\pipeTransport.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\playwright.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\progress.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\protocolError.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\recorder.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\recorder\chat.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\recorder\recorderApp.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\recorder\recorderRunner.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\recorder\recorderSignalProcessor.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\recorder\recorderUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\recorder\throttledFile.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\registry\browserFetcher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\registry\dependencies.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\registry\index.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\registry\nativeDeps.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\registry\oopDownloadBrowserMain.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\screencast.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\screenshotter.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\selectors.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\socksClientCertificatesInterceptor.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\socksInterceptor.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\trace\recorder\snapshotter.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\trace\recorder\snapshotterInjected.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\trace\recorder\tracing.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\trace\viewer\traceParser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\trace\viewer\traceViewer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\transport.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\types.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\usKeyboardLayout.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\ascii.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\comparators.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\crypto.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\debug.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\debugLogger.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\env.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\eventsHelper.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\expectUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\fileUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\happyEyeballs.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\hostPlatform.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\httpServer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\imageUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\image_tools\colorUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\image_tools\compare.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\image_tools\imageChannel.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\image_tools\stats.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\linuxUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\network.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\nodePlatform.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\pipeTransport.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\processLauncher.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\profiler.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\socksProxy.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\spawnAsync.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\task.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\userAgent.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\wsServer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\zipFile.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\utils\zones.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\videoRecorder.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\protocol.d.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\webkit.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\wkBrowser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\wkConnection.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\wkExecutionContext.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\wkInput.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\wkInterceptableRequest.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\wkPage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\wkProvisionalPage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\server\webkit\wkWorkers.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\third_party\pixelmatch.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utilsBundle.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utilsBundleImpl\index.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utilsBundleImpl\xdg-open
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\ariaSnapshot.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\assert.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\colors.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\cssParser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\cssTokenizer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\headers.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\locatorGenerators.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\locatorParser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\locatorUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\lruCache.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\manualPromise.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\mimeType.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\multimap.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\protocolFormatter.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\protocolMetainfo.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\rtti.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\selectorParser.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\semaphore.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\stackTrace.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\stringUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\time.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\timeoutRunner.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\traceUtils.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\entries.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\snapshotRenderer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\snapshotServer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\snapshotStorage.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\traceLoader.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\traceModel.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\traceModernizer.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\versions\traceV3.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\versions\traceV4.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\versions\traceV5.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\versions\traceV6.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\versions\traceV7.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\trace\versions\traceV8.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\types.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\urlMatch.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\utilityScriptSerializers.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\utils\isomorphic\yaml.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\htmlReport\index.html
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\recorder\assets\codeMirrorModule-DadYNm1I.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\recorder\assets\codeMirrorModule-DYBRYzYX.css
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\recorder\assets\codicon-DCmgc-ay.ttf
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\recorder\assets\index-BhTWtUlo.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\recorder\assets\index-BSjZa4pk.css
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\recorder\index.html
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\recorder\playwright-logo.svg
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\assets\codeMirrorModule-a5XoALAZ.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\assets\defaultSettingsView-CJSZINFr.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\assets\xtermModule-CsJ4vdCR.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\codeMirrorModule.DYBRYzYX.css
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\codicon.DCmgc-ay.ttf
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\defaultSettingsView.7ch9cixO.css
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\index.BiGyQqiM.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\index.BVu7tZDe.css
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\index.html
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\manifest.webmanifest
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\playwright-logo.svg
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\snapshot.html
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\sw.bundle.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\uiMode.Btcz36p_.css
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\uiMode.CQJ9SCIQ.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\uiMode.html
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\vite\traceViewer\xtermModule.DYP7pi_n.css
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\zipBundle.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\lib\zipBundleImpl.js
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\LICENSE
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\NOTICE
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\package.json
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\protocol.yml
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\README.md
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\ThirdPartyNotices.txt
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\types\protocol.d.ts
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\types\structs.d.ts
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\.playwright\package\types\types.d.ts
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\playwright.ps1
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Projects\AIAcademy\Oppgave 3\RiksrevisjonApi\bin\Debug\net9.0\Microsoft.Playwright.dll

@@ -56,13 +56,13 @@ Plans:
   3. Matcher view lists all reports with ≥1 match, sorted by severity then match count
   4. Each report row expandable — shows matched notices with score bar, date, buyer, Doffin link
   5. Score bar colour: green ≥ 60, amber 30–59, red < 30
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 03-01: Install vue-router and scaffold /matcher route
-- [ ] 03-02: Build MatcherView.vue — report list with match counts
-- [ ] 03-03: Build expandable notice rows with confidence score bar
-- [ ] 03-04: Wire to /api/matches + polling, add Oppdater-data button, empty/error states
+- [ ] 03-01-PLAN.md — Wire vue-router into main.js + App.vue router shell + DashboardView.vue extraction + tab nav
+- [ ] 03-02-PLAN.md — Build MatcherView.vue report list (fetch, data join, sort, expand toggle)
+- [ ] 03-03-PLAN.md — Add expandable notice rows with score bar, keyword tags, Doffin links
+- [ ] 03-04-PLAN.md — Refresh button (POST /api/matches/refresh), error states, document.title, production build
 
 ### Phase 4: Dashboard Integration
 **Goal**: Surface match count badges on existing report cards in the main dashboard

@@ -1,0 +1,6 @@
+@RiksrevisjonApi_HostAddress = http://localhost:5241
+
+GET {{RiksrevisjonApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
