@@ -447,7 +447,35 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
 
     // Wave 3 (02-03): ComputeMatches, ComputeKeywordScore added here
 
-    // Wave 2 (02-02): NormalizeDepartment, ComputeOrgScore added here
+    // ── Org-Name Normalisation (REQ-04) ────────────────────────────────────────
+
+    internal static string NormalizeDepartment(string? department)
+    {
+        if (string.IsNullOrWhiteSpace(department)) return "";
+
+        // Strip trailing " ·" (e.g. "Helse ·" → "Helse", "Forsvar/sikkerhet/beredskap ·" → "Forsvar/...")
+        var cleaned = department.TrimEnd().TrimEnd('·').Trim();
+        if (string.IsNullOrEmpty(cleaned)) return "";
+
+        // Take the first segment before "/" (e.g. "Forsvar/sikkerhet/beredskap" → "Forsvar")
+        var firstSegment = cleaned.Split('/')[0].Trim();
+
+        // Take the first word (e.g. "Offentlig forvaltning" → "offentlig", "Statens eierstyring" → "statens")
+        var firstWord = firstSegment.Split(' ')[0].Trim();
+
+        return firstWord.ToLowerInvariant();
+    }
+
+    internal static (double score, string? matchedOrg) ComputeOrgScore(
+        string normDept, Notice notice)
+    {
+        if (string.IsNullOrEmpty(normDept)) return (0.0, null);
+
+        if (notice.Buyer.ToLowerInvariant().Contains(normDept))
+            return (100.0, normDept);
+
+        return (0.0, null);
+    }
 
     // ── Keyword Extraction (REQ-03) ─────────────────────────────────────────
 

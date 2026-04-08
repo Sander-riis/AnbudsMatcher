@@ -4,21 +4,38 @@ public class OrgNormalisationTests
 {
     [Fact]
     public void NormalizeDepartment_StripsTrailingDot()
-        => throw new NotImplementedException("Wave 2 (02-02): implement MatchService.NormalizeDepartment");
+    {
+        Assert.Equal("helse", MatchService.NormalizeDepartment("Helse ·"));
+        Assert.Equal("helse", MatchService.NormalizeDepartment("Helse"));
+    }
 
     [Fact]
     public void NormalizeDepartment_ReturnsFirstSegmentOnSlash()
-        => throw new NotImplementedException("Wave 2 (02-02): implement MatchService.NormalizeDepartment");
+    {
+        Assert.Equal("forsvar", MatchService.NormalizeDepartment("Forsvar/sikkerhet/beredskap ·"));
+        Assert.Equal("forsvar", MatchService.NormalizeDepartment("Forsvar/sikkerhet/beredskap"));
+    }
 
     [Fact]
     public void NormalizeDepartment_LowercasesResult()
-        => throw new NotImplementedException("Wave 2 (02-02): implement MatchService.NormalizeDepartment");
+    {
+        Assert.Equal("offentlig", MatchService.NormalizeDepartment("Offentlig forvaltning"));
+        Assert.Equal("statens", MatchService.NormalizeDepartment("Statens eierstyring"));
+    }
 
     [Fact]
     public void NormalizeDepartment_ReturnsEmptyForBlankInput()
-        => throw new NotImplementedException("Wave 2 (02-02): implement MatchService.NormalizeDepartment");
+    {
+        Assert.Equal("", MatchService.NormalizeDepartment(""));
+        Assert.Equal("", MatchService.NormalizeDepartment("   "));
+        Assert.Equal("", MatchService.NormalizeDepartment(null));
+    }
 
     [Fact]
     public void NormalizeDepartment_ReturnsEmptyForOnlyDotInput()
-        => throw new NotImplementedException("Wave 2 (02-02): implement MatchService.NormalizeDepartment");
+    {
+        // "  ·  " → TrimEnd() → "  ·" → TrimEnd('·') → "  " → Trim() → "" → return ""
+        Assert.Equal("", MatchService.NormalizeDepartment("  ·  "));
+        Assert.Equal("", MatchService.NormalizeDepartment(" · "));
+    }
 }
