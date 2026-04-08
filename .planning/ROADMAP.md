@@ -37,13 +37,14 @@ Plans:
   2. Each match includes noticeId, score, matchedKeywords, matchedOrg fields
   3. Combined score formula: keyword_score × 0.6 + org_score × 0.4
   4. `POST /api/matches/refresh` triggers re-scrape and rematch
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 02-01: Implement keyword extractor with Norwegian stopword list
-- [ ] 02-02: Implement org-name normaliser (strip AS/departement suffixes)
-- [ ] 02-03: Implement scoring algorithm + threshold filter (score > 15)
-- [ ] 02-04: Wire GET /api/matches and POST /api/matches/refresh endpoints
+- [ ] 02-00-PLAN.md — Scaffold xUnit test project + InternalsVisibleTo + 20 stub test files (Wave 0)
+- [ ] 02-01-PLAN.md — TDD: MatchService skeleton + internal static ExtractKeywords (Wave 1)
+- [ ] 02-02-PLAN.md — TDD: internal static NormalizeDepartment + ComputeOrgScore (Wave 2)
+- [ ] 02-03-PLAN.md — TDD: ComputeKeywordScore + ComputeMatches pure-function overload (Wave 3)
+- [ ] 02-04-PLAN.md — Complete MatchService (LoadAsync + cache) + DI + endpoints (Wave 4)
 
 ### Phase 3: Matcher UI
 **Goal**: Add an Anbudsmatcher tab to the existing Vue dashboard showing matched notices per report
