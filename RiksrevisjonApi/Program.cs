@@ -174,7 +174,7 @@ class ReportService(IHttpClientFactory factory)
         var catRx = new Regex(@"rr-search-result-meta[^>]*>\s*([^<]+?)\s*</div>", RegexOptions.IgnoreCase);
 
         int id = (page - 1) * 20 + 1;
-        foreach (Match m in blockRx.Matches(html))
+        foreach (System.Text.RegularExpressions.Match m in blockRx.Matches(html))
         {
             var href = m.Groups[1].Value.Trim();
             var block = m.Groups[2].Value;
@@ -219,7 +219,7 @@ class ReportService(IHttpClientFactory factory)
 
         // Fallback: <strong> tags
         var strongRx = new Regex(@"<strong[^>]*>(.*?)</strong>", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-        foreach (Match sm in strongRx.Matches(html))
+        foreach (System.Text.RegularExpressions.Match sm in strongRx.Matches(html))
         {
             var t = sm.Groups[1].Value.ToLowerInvariant().Trim().TrimEnd('.');
             if (t.Contains("sterkt kritikkverdig")) return "Sterkt kritikkverdig";
@@ -239,6 +239,9 @@ record Report(int Id, string Title, string Summary, string Severity,
 
 record Notice(int Id, string Title, string Buyer, string PublishedDate,
               string Url, string Description);
+
+record Match(int ReportId, int NoticeId, double Score,
+             string[] MatchedKeywords, string? MatchedOrg);
 
 // ─── DoffinService ────────────────────────────────────────────────────────────
 
@@ -429,5 +432,57 @@ class DoffinService
         {
             await page.CloseAsync();
         }
+    }
+}
+
+// ─── MatchService ─────────────────────────────────────────────────────────────
+
+class MatchService(ReportService reportSvc, DoffinService doffinSvc)
+{
+    private List<Match> _matches = [];
+    public bool IsLoading { get; private set; }
+    public IReadOnlyList<Match> Matches { get { lock (_matches) return _matches.ToList(); } }
+
+    // Wave 4 (02-04): LoadAsync, TryLoadCache, SaveCache added here
+
+    // Wave 3 (02-03): ComputeMatches, ComputeKeywordScore added here
+
+    // Wave 2 (02-02): NormalizeDepartment, ComputeOrgScore added here
+
+    // ── Keyword Extraction (REQ-03) ─────────────────────────────────────────
+
+    private static readonly HashSet<string> Stopwords =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            "og", "i", "på", "er", "til", "av", "som", "med", "at", "har", "de", "vi",
+            "men", "fra", "dem", "seg", "sin", "ikke", "han", "hun", "det", "den",
+            "en", "et", "for", "over", "under", "ut", "inn", "om", "når", "hvor",
+            "hvem", "hva", "alle", "noen", "ingen", "andre", "disse", "dette", "da",
+            "så", "her", "der", "nå", "var", "vil", "kan", "skal", "bør", "må",
+            "også", "samt", "eller", "etter", "før", "uten", "mot", "hos", "ved",
+            "jo", "ja", "nei", "alt", "mange", "mye", "lite", "ble", "blitt", "blir",
+            "vært", "være", "sa", "si", "sier", "sitt", "sine", "hans",
+            "hennes", "deres", "vår", "vårt", "våre", "din", "ditt", "dine",
+            "fordi", "siden", "enten", "verken", "hverken", "både", "mens", "enn",
+            "dog", "likevel", "imidlertid", "dermed", "altså", "dessuten",
+            "riksrevisjonens", "riksrevisjonen", "rapport", "undersøkelse",
+            "dokument", "bilag", "stortinget", "norsk", "norske", "norge",
+            "å", "dei", "me", "ho"
+        };
+
+    private static readonly System.Text.RegularExpressions.Regex TokenRegex =
+        new(@"[^a-zæøåA-ZÆØÅ]+",
+            System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    internal static List<string> ExtractKeywords(string? text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return [];
+
+        return TokenRegex
+            .Split(text.ToLowerInvariant())
+            .Where(w => w.Length >= 3)
+            .Where(w => !Stopwords.Contains(w))
+            .Distinct()
+            .ToList();
     }
 }

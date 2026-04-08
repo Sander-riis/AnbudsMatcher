@@ -4,25 +4,50 @@ public class KeywordExtractionTests
 {
     [Fact]
     public void ExtractKeywords_RemovesNorwegianStopwords()
-        => throw new NotImplementedException("Wave 1 (02-01): implement MatchService.ExtractKeywords");
+    {
+        var result = MatchService.ExtractKeywords("helfo og nav");
+        Assert.Contains("helfo", result);
+        Assert.Contains("nav", result);
+        Assert.DoesNotContain("og", result);
+    }
 
     [Fact]
     public void ExtractKeywords_FiltersShortWords()
-        => throw new NotImplementedException("Wave 1 (02-01): implement MatchService.ExtractKeywords");
+    {
+        var result = MatchService.ExtractKeywords("IT og IKT");
+        Assert.DoesNotContain("it", result);   // length 2 — filtered
+        Assert.Contains("ikt", result);         // length 3 — kept
+    }
 
     [Fact]
     public void ExtractKeywords_KeepsMeaningfulNorwegianWords()
-        => throw new NotImplementedException("Wave 1 (02-01): implement MatchService.ExtractKeywords");
+    {
+        var result = MatchService.ExtractKeywords("kjøp av helsetjenester");
+        Assert.Contains("helsetjenester", result);
+        Assert.DoesNotContain("av", result);
+        Assert.Contains("kjøp", result);
+    }
 
     [Fact]
     public void ExtractKeywords_PreservesNorwegianCharacters()
-        => throw new NotImplementedException("Wave 1 (02-01): implement MatchService.ExtractKeywords");
+    {
+        var result = MatchService.ExtractKeywords("Riksrevisjonens anskaffelse");
+        Assert.Contains("anskaffelse", result);
+        Assert.DoesNotContain("riksrevisjonens", result);  // in Stopwords list
+    }
 
     [Fact]
     public void ExtractKeywords_ReturnsDistinctWords()
-        => throw new NotImplementedException("Wave 1 (02-01): implement MatchService.ExtractKeywords");
+    {
+        var result = MatchService.ExtractKeywords("helfo helfo helfo");
+        Assert.Equal(1, result.Count(w => w == "helfo"));
+    }
 
     [Fact]
     public void ExtractKeywords_ReturnsEmptyForNullOrWhitespace()
-        => throw new NotImplementedException("Wave 1 (02-01): implement MatchService.ExtractKeywords");
+    {
+        Assert.Empty(MatchService.ExtractKeywords(""));
+        Assert.Empty(MatchService.ExtractKeywords("   "));
+        Assert.Empty(MatchService.ExtractKeywords(null));
+    }
 }
