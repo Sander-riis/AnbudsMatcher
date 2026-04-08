@@ -17,6 +17,7 @@ builder.Services.AddHttpClient("rr", c =>
 
 builder.Services.AddSingleton<ReportService>();
 builder.Services.AddSingleton<DoffinService>();
+builder.Services.AddSingleton<MatchService>();
 
 var app = builder.Build();
 app.UseCors();
@@ -26,6 +27,9 @@ _ = svc.LoadAsync();
 
 var doffinSvc = app.Services.GetRequiredService<DoffinService>();
 _ = doffinSvc.LoadAsync();
+
+var matchSvc = app.Services.GetRequiredService<MatchService>();
+_ = matchSvc.LoadAsync();
 
 app.MapGet("/api/reports", (ReportService s) =>
     Results.Ok(new { loading = s.IsLoading, reports = s.Reports }));
@@ -43,6 +47,21 @@ app.MapGet("/api/notices", (DoffinService s) =>
 app.MapPost("/api/notices/refresh", async (DoffinService s) =>
 {
     _ = s.LoadAsync(forceRefresh: true);
+    return Results.Accepted();
+});
+
+app.MapGet("/api/matches", (MatchService s) =>
+    Results.Ok(new { loading = s.IsLoading, matches = s.Matches }));
+
+app.MapPost("/api/matches/refresh", (
+    MatchService ms, ReportService rs, DoffinService ds) =>
+{
+    _ = Task.Run(async () =>
+    {
+        await rs.LoadAsync(forceRefresh: true);
+        await ds.LoadAsync(forceRefresh: true);
+        await ms.LoadAsync(forceRefresh: true);
+    });
     return Results.Accepted();
 });
 
@@ -443,7 +462,57 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
     public bool IsLoading { get; private set; }
     public IReadOnlyList<Match> Matches { get { lock (_matches) return _matches.ToList(); } }
 
-    // Wave 4 (02-04): LoadAsync, TryLoadCache, SaveCache added here
+    private static readonly string CacheFile = Path.Combine(
+        AppContext.BaseDirectory, "matches-cache.json");
+    private static readonly TimeSpan CacheMaxAge = TimeSpan.FromHours(12);
+    private static readonly JsonSerializerOptions JsonOpts = new() { WriteIndented = true };
+
+    public async Task LoadAsync(bool forceRefresh = false)
+    {
+        IsLoading = true;
+        try
+        {
+            if (!forceRefresh && TryLoadCache(out var cached))
+            {
+                lock (_matches) { _matches.Clear(); _matches.AddRange(cached!); }
+                Console.WriteLine($"[matches] Loaded {cached!.Count} matches from cache");
+                return;
+            }
+
+            // Wait for upstream services to finish their own loading
+            while (reportSvc.IsLoading || doffinSvc.IsLoading)
+                await Task.Delay(100);
+
+            RunComputeMatches();
+            SaveCache();
+        }
+        finally { IsLoading = false; }
+    }
+
+    private bool TryLoadCache(out List<Match>? matches)
+    {
+        matches = null;
+        if (!File.Exists(CacheFile)) return false;
+        if (File.GetLastWriteTime(CacheFile) < DateTime.Now - CacheMaxAge) return false;
+        try
+        {
+            var json = File.ReadAllText(CacheFile);
+            matches = JsonSerializer.Deserialize<List<Match>>(json, JsonOpts);
+            return matches?.Count > 0;
+        }
+        catch { return false; }
+    }
+
+    private void SaveCache()
+    {
+        try
+        {
+            var json = JsonSerializer.Serialize(Matches, JsonOpts);
+            File.WriteAllText(CacheFile, json);
+            Console.WriteLine($"[matches] Saved {Matches.Count} matches to {CacheFile}");
+        }
+        catch (Exception ex) { Console.WriteLine($"[matches] Cache save failed: {ex.Message}"); }
+    }
 
     // ── Scoring Algorithm (REQ-03 + REQ-04) ─────────────────────────────────────
 
