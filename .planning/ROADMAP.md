@@ -72,11 +72,11 @@ Plans:
   1. Report cards show "N anbudstreff" badge when matches exist
   2. Clicking badge navigates to /matcher filtered to that report
   3. No visual regression on existing dashboard layout
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: Fetch /api/matches in App.vue and pass counts to report cards
-- [ ] 04-02: Add badge component with deep-link to /matcher?report={id}
+- [ ] 04-01-PLAN.md — Fetch /api/matches in DashboardView.vue, build matchCountMap, add RouterLink badge to card-foot
+- [ ] 04-02-PLAN.md — Read ?report= query param in MatcherView.vue, filter list, show filter banner with dismiss
 
 ## Progress
 
