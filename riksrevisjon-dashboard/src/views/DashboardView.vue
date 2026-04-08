@@ -1,7 +1,9 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const reports = ref([])
+const matches = ref([])
 const loading = ref(true)
 const activeFilter = ref('Alle')
 const searchQuery = ref('')
@@ -19,10 +21,15 @@ const severityMeta = {
 const severityOrder = { 'Sterkt kritikkverdig': 0, 'Kritikkverdig': 1, 'Ikke tilfredsstillende': 2, 'Ingen karakter': 3 }
 
 async function fetchReports() {
-  const res = await fetch('/api/reports')
-  const data = await res.json()
-  reports.value = data.reports
-  if (data.loading) {
+  const [rRes, mRes] = await Promise.all([
+    fetch('/api/reports'),
+    fetch('/api/matches'),
+  ])
+  const rData = await rRes.json()
+  const mData = await mRes.json()
+  reports.value = rData.reports
+  matches.value = mData.matches ?? []
+  if (rData.loading) {
     pollTimer = setTimeout(fetchReports, 2000)
   } else {
     loading.value = false
@@ -61,6 +68,14 @@ const counts = computed(() => {
     c[f] = f === 'Alle' ? reports.value.length : reports.value.filter(r => r.severity === f).length
   }
   return c
+})
+
+const matchCountMap = computed(() => {
+  const m = new Map()
+  for (const match of matches.value) {
+    m.set(match.reportId, (m.get(match.reportId) ?? 0) + 1)
+  }
+  return m
 })
 
 const chartBars = computed(() => {
@@ -193,6 +208,13 @@ function fmtDate(d) {
                 <span class="badge mono" :style="{ color: severityMeta[sev].color, borderColor: severityMeta[sev].color }">
                   {{ sev }}
                 </span>
+                <RouterLink
+                  v-if="matchCountMap.get(r.id)"
+                  :to="`/matcher?report=${r.id}`"
+                  class="match-badge mono"
+                >
+                  {{ matchCountMap.get(r.id) }} anbudstreff
+                </RouterLink>
                 <a :href="r.url" target="_blank" rel="noopener" class="link mono">
                   Les rapport <span aria-hidden="true">→</span>
                 </a>
@@ -560,6 +582,24 @@ body {
   padding: 0.2rem 0.5rem;
   border-radius: 1px;
   opacity: 0.65;
+}
+.match-badge {
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.55rem;
+  background: rgba(82, 121, 111, 0.08);
+  border: 1px solid rgba(82, 121, 111, 0.35);
+  border-radius: 2px;
+  color: #52796f;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.match-badge:hover {
+  background: rgba(82, 121, 111, 0.15);
+  border-color: #52796f;
 }
 .link {
   font-size: 0.63rem;

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 // ── State ────────────────────────────────────────────────────────────────
 const reports    = ref([])
@@ -9,6 +10,15 @@ const loading    = ref(true)
 const error      = ref(null)
 const refreshing = ref(false)
 const expandedIds = ref(new Set())
+
+// ── Router / URL filter ───────────────────────────────────────────────────
+const route  = useRoute()
+const router = useRouter()
+
+const filterReportId = computed(() => {
+  const v = route.query.report
+  return v ? Number(v) : null
+})
 
 // ── Severity metadata ─────────────────────────────────────────────────────
 const severityOrder = {
@@ -94,13 +104,18 @@ const matchedReports = computed(() => {
     result.push({ report, matches: reportMatches })
   }
 
-  return result.sort((a, b) => {
+  const sorted = result.sort((a, b) => {
     const sevDiff =
       (severityOrder[a.report.severity] ?? 99) -
       (severityOrder[b.report.severity] ?? 99)
     if (sevDiff !== 0) return sevDiff
     return b.matches.length - a.matches.length
   })
+
+  if (filterReportId.value !== null) {
+    return sorted.filter(item => item.report.id === filterReportId.value)
+  }
+  return sorted
 })
 
 // ── Expand / collapse ─────────────────────────────────────────────────────
@@ -157,6 +172,12 @@ async function refreshData() {
       </button>
     </div>
 
+    <!-- Active filter banner -->
+    <div v-if="filterReportId" class="filter-banner mono">
+      <span>Filtrert til én rapport</span>
+      <button class="chip" @click="router.push('/matcher')">Vis alle</button>
+    </div>
+
     <!-- Loading -->
     <div v-if="loading" class="matcher-loading">
       <div class="loading-ring"></div>
@@ -176,7 +197,13 @@ async function refreshData() {
 
     <!-- Empty -->
     <div v-else-if="matchedReports.length === 0" class="matcher-empty mono muted">
-      Ingen treff -- ingen rapporter har matchet Doffin-kunngjoeringer.
+      <template v-if="filterReportId">
+        Denne rapporten har ingen anbudstreff.
+        <button class="chip" style="margin-top: 0.5rem; display: block;" @click="router.push('/matcher')">Vis alle rapporter</button>
+      </template>
+      <template v-else>
+        Ingen treff &mdash; ingen rapporter har matchet Doffin-kunngjoeringer.
+      </template>
     </div>
 
     <!-- Report list -->
@@ -486,6 +513,21 @@ async function refreshData() {
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
+}
+
+.filter-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 1rem;
 }
 
 .refresh-spinner {
