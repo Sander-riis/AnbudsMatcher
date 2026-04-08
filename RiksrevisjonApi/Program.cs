@@ -445,7 +445,58 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
 
     // Wave 4 (02-04): LoadAsync, TryLoadCache, SaveCache added here
 
-    // Wave 3 (02-03): ComputeMatches, ComputeKeywordScore added here
+    // ── Scoring Algorithm (REQ-03 + REQ-04) ─────────────────────────────────────
+
+    /// Pure-function overload — testable without real services (InternalsVisibleTo).
+    internal static List<Match> ComputeMatches(
+        IReadOnlyList<Report> reports,
+        IReadOnlyList<Notice> notices)
+    {
+        var results = new List<Match>();
+
+        foreach (var report in reports)
+        {
+            var keywords = ExtractKeywords(report.Title + " " + report.Summary);
+            if (keywords.Count == 0) continue;  // guard: avoids division-by-zero in keyword_score
+
+            var normDept = NormalizeDepartment(report.Department);
+
+            foreach (var notice in notices)
+            {
+                var (keyScore, matchedKw) = ComputeKeywordScore(keywords, notice);
+                var (orgScore, matchedOrg) = ComputeOrgScore(normDept, notice);
+                var combined = keyScore * 0.6 + orgScore * 0.4;
+
+                if (combined > 15)
+                    results.Add(new Match(
+                        report.Id, notice.Id,
+                        Math.Round(combined, 1),
+                        matchedKw.ToArray(),
+                        matchedOrg));
+            }
+        }
+
+        return results;
+    }
+
+    private void RunComputeMatches()
+    {
+        var results = ComputeMatches(reportSvc.Reports, doffinSvc.Notices);
+        lock (_matches) { _matches.Clear(); _matches.AddRange(results); }
+        Console.WriteLine($"[matches] Computed {results.Count} matches " +
+                          $"({reportSvc.Reports.Count} reports x {doffinSvc.Notices.Count} notices)");
+    }
+
+    internal static (double score, List<string> matched) ComputeKeywordScore(
+        List<string> keywords, Notice notice)
+    {
+        if (keywords.Count == 0) return (0.0, []);
+
+        var noticeText = (notice.Title + " " + notice.Description).ToLowerInvariant();
+        var matched = keywords.Where(kw => noticeText.Contains(kw)).ToList();
+        var score = (matched.Count / (double)keywords.Count) * 100.0;
+        return (score, matched);
+    }
 
     // ── Org-Name Normalisation (REQ-04) ────────────────────────────────────────
 
