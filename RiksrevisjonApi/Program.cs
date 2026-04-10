@@ -868,6 +868,7 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
             var bigrams    = ExtractBigrams(report.Title);
             var titleWords = ExtractTitleWords(report.Title);
             var normDept   = NormalizeDepartment(report.Department);
+            var deptKeywords = GetDeptKeywords(report.Department);
             DateOnly.TryParse(report.PublishedDate, out var reportDate);
 
             foreach (var notice in notices)
@@ -878,6 +879,7 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
                 var (keyScore, matchedKw) = ComputeKeywordScoreFast(keywords, tokens, idf);
                 var (orgScore, matchedOrg) = ComputeOrgScore(normDept, notice);
                 var (titleScore, matchedTw) = ComputeTitleWordScoreFast(titleWords, text);
+                var deptScore = ComputeDeptKeywordScore(deptKeywords, text);
 
                 // Gate: require at least one signal — org, keyword, or title-word match
                 if (orgScore == 0 && keyScore < 40 && titleScore == 0) continue;
@@ -891,7 +893,8 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
                     noticeDate >= reportDate)
                     dateFactor = 1.15;
 
-                var combined = (keyScore * 0.40 + bigramScore * 0.15 + orgScore * 0.25 + titleScore * 0.20) * dateFactor;
+                var combined = (keyScore * 0.35 + bigramScore * 0.10 + orgScore * 0.20
+                    + titleScore * 0.20 + deptScore * 0.15) * dateFactor;
 
                 if (combined > 40)
                     results.Add(new Match(
@@ -938,6 +941,69 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
         var matched = titleWords.Where(tw => noticeTextLower.Contains(tw)).ToList();
         if (matched.Count == 0) return (0.0, []);
         return ((matched.Count / (double)titleWords.Count) * 100.0, matched);
+    }
+
+    // ── Department → Domain Keyword Mapping ──────────────────────────────────────
+
+    internal static readonly Dictionary<string, string[]> DeptKeywordMap = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Helse"] = ["helse", "sykehus", "pasient", "medisin", "legemiddel", "helseforetak",
+            "spesialist", "fastlege", "psykisk", "rehabilitering", "omsorg", "pleie"],
+        ["Forsvar"] = ["forsvar", "militær", "forsvaret", "nato", "sikkerhet", "beredskap",
+            "våpen", "ammunisjon", "marine", "hæren", "luftforsvaret", "forsvarsbygg"],
+        ["Samferdsel"] = ["vei", "jernbane", "bane", "transport", "luftfart", "sjøfart",
+            "ferge", "bru", "tunnel", "vegvesen", "avinor", "entur", "tog"],
+        ["Energi"] = ["energi", "klima", "miljø", "utslipp", "fornybar", "petroleum",
+            "olje", "gass", "kraft", "nve", "statnett", "enova", "bærekraft"],
+        ["Utdanning"] = ["skole", "universitet", "utdanning", "forskning", "elev", "student",
+            "barnehage", "lærling", "kompetanse", "høyskole", "akademi"],
+        ["Digitalisering"] = ["ikt", "digital", "it-", "data", "cyber", "sikkerhet",
+            "system", "programvare", "infrastruktur", "nett", "cloud", "sky"],
+        ["Arbeidsliv"] = ["arbeid", "sysselsetting", "nav", "pensjon", "trygd",
+            "arbeidsgiver", "arbeidstaker", "lønn", "permittering", "yrke"],
+        ["Landbruk"] = ["landbruk", "jordbruk", "fiske", "havbruk", "skog", "reindrift",
+            "mat", "mattilsyn", "veterinær", "akvakultur", "fiskeri"],
+        ["Familie"] = ["barn", "familie", "barnevern", "ungdom", "oppvekst",
+            "likestilling", "integrering", "bufdir", "bufetat"],
+        ["Bistand"] = ["bistand", "utenriks", "norad", "utviklingsland",
+            "humanitær", "ambassade", "diplomatisk", "fred"],
+        ["Skatter"] = ["skatt", "avgift", "toll", "merverdi", "mva",
+            "skatteoppkrever", "kemner", "innkreving"],
+        ["Offentlig"] = ["forvaltning", "statsbudsjett", "kommune", "fylke",
+            "offentlig", "departement", "direktorat", "tilsyn", "etat"],
+        ["Statens"] = ["statlig", "statsforetak", "statseid", "eierskap",
+            "selskap", "styre", "utbytte", "konsern"]
+    };
+
+    /// Extract department categories from compound department string and collect matching domain keywords.
+    internal static List<string> GetDeptKeywords(string? department)
+    {
+        if (string.IsNullOrWhiteSpace(department)) return [];
+        var results = new List<string>();
+        // Split compound departments: "Helse · / Digitalisering/ikt" → ["Helse", "Digitalisering/ikt"]
+        var segments = department.Split("·", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .SelectMany(s => s.Split("/", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries));
+        foreach (var seg in segments)
+        {
+            foreach (var (key, keywords) in DeptKeywordMap)
+            {
+                if (seg.StartsWith(key, StringComparison.OrdinalIgnoreCase))
+                {
+                    results.AddRange(keywords);
+                    break;
+                }
+            }
+        }
+        return results.Distinct().ToList();
+    }
+
+    /// Score how many department domain keywords appear in the notice text.
+    internal static double ComputeDeptKeywordScore(List<string> deptKeywords, string noticeTextLower)
+    {
+        if (deptKeywords.Count == 0) return 0.0;
+        int hits = deptKeywords.Count(kw => noticeTextLower.Contains(kw));
+        if (hits == 0) return 0.0;
+        return Math.Min((hits / (double)deptKeywords.Count) * 200.0, 100.0);
     }
 
     /// Compute inverse document frequency over the notices corpus.
