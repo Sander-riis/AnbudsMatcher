@@ -155,11 +155,24 @@ app.MapGet("/api/debug/doffin-test", async (IHttpClientFactory factory) =>
     }
 });
 
+app.MapGet("/api/health", (ReportService rs, DoffinService ds, MatchService ms) =>
+    Results.Ok(new
+    {
+        status = rs.IsLoading || ds.IsLoading || ms.IsLoading ? "loading" : "ready",
+        uptime = (DateTime.UtcNow - startedAt).ToString(@"d\.hh\:mm\:ss"),
+        services = new
+        {
+            reports = new { count = rs.Reports.Count, loading = rs.IsLoading, lastError = rs.LastError, lastLoadedAt = rs.LastLoadedAt },
+            notices = new { count = ds.Notices.Count, loading = ds.IsLoading, lastError = ds.LastError, lastLoadedAt = ds.LastLoadedAt },
+            matches = new { count = ms.Matches.Count, loading = ms.IsLoading, lastError = ms.LastError, lastLoadedAt = ms.LastLoadedAt }
+        }
+    }));
+
 app.Run();
 
 // ─── Service ──────────────────────────────────────────────────────────────────
 
-class ReportService(IHttpClientFactory factory)
+class ReportService(IHttpClientFactory factory, ILogger<ReportService> log)
 {
     private static readonly string CacheFile = Path.Combine(
         AppContext.BaseDirectory, "reports-cache.json");
@@ -170,23 +183,33 @@ class ReportService(IHttpClientFactory factory)
 
     private List<Report> _reports = [];
     public bool IsLoading { get; private set; }
+    public string? LastError { get; private set; }
+    public DateTime? LastLoadedAt { get; private set; }
     public IReadOnlyList<Report> Reports { get { lock (_reports) return _reports.ToList(); } }
 
     public async Task LoadAsync(bool forceRefresh = false)
     {
         IsLoading = true;
+        LastError = null;
         try
         {
             // Serve from cache if fresh enough
             if (!forceRefresh && TryLoadCache(out var cached))
             {
                 lock (_reports) { _reports.Clear(); _reports.AddRange(cached!); }
-                Console.WriteLine($"[cache] Loaded {cached!.Count} reports from {CacheFile}");
+                log.LogInformation("Loaded {Count} reports from cache", cached!.Count);
+                LastLoadedAt = DateTime.UtcNow;
                 return;
             }
 
             await ScrapeAsync();
             SaveCache();
+            LastLoadedAt = DateTime.UtcNow;
+        }
+        catch (Exception ex)
+        {
+            LastError = ex.Message;
+            throw;
         }
         finally { IsLoading = false; }
     }
@@ -213,9 +236,9 @@ class ReportService(IHttpClientFactory factory)
         {
             var json = JsonSerializer.Serialize(Reports, JsonOpts);
             File.WriteAllText(CacheFile, json);
-            Console.WriteLine($"[cache] Saved {Reports.Count} reports to {CacheFile}");
+            log.LogInformation("Saved {Count} reports to cache", Reports.Count);
         }
-        catch (Exception ex) { Console.WriteLine($"[cache] Save failed: {ex.Message}"); }
+        catch (Exception ex) { log.LogError(ex, "Cache save failed"); }
     }
 
     // ── Scrape ───────────────────────────────────────────────────────────────
@@ -230,7 +253,7 @@ class ReportService(IHttpClientFactory factory)
         // Scrape one paginated search per term — sequentially
         foreach (var term in SearchTerms)
         {
-            Console.WriteLine($"[scrape] Scraping term: {term}");
+            log.LogInformation("Scraping term: {Term}", term);
             int page = 1;
             while (true)
             {
@@ -239,9 +262,9 @@ class ReportService(IHttpClientFactory factory)
                 allReports.AddRange(batch);
                 page++;
             }
-            Console.WriteLine($"[scrape]   → done for '{term}'");
+            log.LogInformation("Done for term {Term}", term);
         }
-        Console.WriteLine($"[scrape] Total before dedup: {allReports.Count}");
+        log.LogInformation("Total before dedup: {Count}", allReports.Count);
 
         // Deduplicate by URL, re-assign sequential IDs
         var deduped = allReports
@@ -250,10 +273,10 @@ class ReportService(IHttpClientFactory factory)
             .Select(g => g.First())
             .Select((r, i) => r with { Id = i + 1 })
             .ToList();
-        Console.WriteLine($"[scrape] After dedup: {deduped.Count} unique reports");
+        log.LogInformation("After dedup: {Count} unique reports", deduped.Count);
 
         // Enrich with severity in parallel
-        Console.WriteLine($"[scrape] Enriching {deduped.Count} reports...");
+        log.LogInformation("Enriching {Count} reports", deduped.Count);
         var sem = new SemaphoreSlim(8);
         var enrichTasks = deduped.Select(async item =>
         {
@@ -269,7 +292,7 @@ class ReportService(IHttpClientFactory factory)
             _reports.Clear();
             _reports.AddRange(enriched);
         }
-        Console.WriteLine($"[scrape] Done — {_reports.Count} reports loaded");
+        log.LogInformation("Done — {Count} reports loaded", _reports.Count);
     }
 
     static async Task<List<Report>> FetchSearchPage(HttpClient client, string term, int page)
@@ -436,7 +459,7 @@ record DoffinBuyer(string Id, string Name);
 
 // ─── DoffinService ────────────────────────────────────────────────────────────
 
-class DoffinService(IHttpClientFactory factory)
+class DoffinService(IHttpClientFactory factory, ILogger<DoffinService> log)
 {
     private static readonly string CacheFile = Path.Combine(
         AppContext.BaseDirectory, "notices-cache.json");
@@ -459,6 +482,8 @@ class DoffinService(IHttpClientFactory factory)
 
     private List<Notice> _notices = [];
     public bool IsLoading { get; private set; }
+    public string? LastError { get; private set; }
+    public DateTime? LastLoadedAt { get; private set; }
     public IReadOnlyList<Notice> Notices { get { lock (_notices) return _notices.ToList(); } }
 
     /// Extract rare words (≥8 chars, no stopwords) from report titles —
@@ -490,25 +515,33 @@ class DoffinService(IHttpClientFactory factory)
     public async Task LoadAsync(bool forceRefresh = false)
     {
         IsLoading = true;
+        LastError = null;
         try
         {
             // Version mismatch check: if cache file exists but has a stale version,
             // purge all three caches before loading to prevent cross-cache ID mismatches.
             if (!forceRefresh && CheckVersionMismatch(CacheFile, SearchVersion))
             {
-                Console.WriteLine("[doffin] Cache version mismatch — purging all three caches");
+                log.LogWarning("Cache version mismatch — purging all three caches");
                 PurgeAllCaches(CacheFile, ReportsCacheFile, MatchesCacheFile);
             }
 
             if (!forceRefresh && TryLoadCache(out var cached))
             {
                 lock (_notices) { _notices.Clear(); _notices.AddRange(cached!); }
-                Console.WriteLine($"[doffin] Loaded {cached!.Count} notices from cache");
+                log.LogInformation("Loaded {Count} notices from cache", cached!.Count);
+                LastLoadedAt = DateTime.UtcNow;
                 return;
             }
 
             await ScrapeAsync();
             SaveCache();
+            LastLoadedAt = DateTime.UtcNow;
+        }
+        catch (Exception ex)
+        {
+            LastError = ex.Message;
+            throw;
         }
         finally { IsLoading = false; }
     }
@@ -536,9 +569,9 @@ class DoffinService(IHttpClientFactory factory)
             var envelope = new CacheEnvelope<Notice>(SearchVersion, Notices.ToList());
             var json = JsonSerializer.Serialize(envelope, JsonOpts);
             File.WriteAllText(CacheFile, json);
-            Console.WriteLine($"[doffin] Saved {Notices.Count} notices to {CacheFile}");
+            log.LogInformation("Saved {Count} notices to cache", Notices.Count);
         }
-        catch (Exception ex) { Console.WriteLine($"[doffin] Cache save failed: {ex.Message}"); }
+        catch (Exception ex) { log.LogError(ex, "Cache save failed"); }
     }
 
     /// <summary>
@@ -626,25 +659,25 @@ class DoffinService(IHttpClientFactory factory)
         var years = Enumerable.Range(2022, DateTime.Now.Year - 2022 + 1);
         foreach (var year in years)
         {
-            Console.WriteLine($"[doffin] Scraping Tjenester for {year}");
+            log.LogInformation("Scraping Tjenester for {Year}", year);
             try
             {
                 var yearNotices = await ScrapeYearAsync(apiClient, year);
-                Console.WriteLine($"[doffin]   → {yearNotices.Count} notices for {year}");
+                log.LogInformation("{Count} notices for {Year}", yearNotices.Count, year);
                 allNotices.AddRange(yearNotices);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[doffin]   → ERROR for {year}: {ex.Message}");
+                log.LogWarning(ex, "Error for {Year}", year);
             }
         }
-        Console.WriteLine($"[doffin] Total before dedup: {allNotices.Count}");
+        log.LogInformation("Total before dedup: {Count}", allNotices.Count);
 
         // Deduplicate by URL — keep first occurrence, re-assign sequential IDs
         var deduped = DeduplicateNotices(allNotices);
 
         lock (_notices) { _notices.Clear(); _notices.AddRange(deduped); }
-        Console.WriteLine($"[doffin] Done — {_notices.Count} Tjenester notices loaded");
+        log.LogInformation("Done — {Count} Tjenester notices loaded", _notices.Count);
     }
 
     private static readonly int MaxPagesPerTerm = 250;  // 250 × 100 = 25000 notices max
@@ -687,7 +720,7 @@ class DoffinService(IHttpClientFactory factory)
             // Doffin API returns 400 when page exceeds its internal limit (~10 pages)
             if (!resp.IsSuccessStatusCode)
             {
-                Console.WriteLine($"[doffin]   page {page} returned {(int)resp.StatusCode} — stopping pagination");
+                log.LogWarning("Page {Page} returned {StatusCode} — stopping pagination", page, (int)resp.StatusCode);
                 break;
             }
 
@@ -696,7 +729,7 @@ class DoffinService(IHttpClientFactory factory)
 
             if (result == null || result.Hits.Count == 0 || page > MaxPagesPerTerm) break;
 
-            Console.WriteLine($"[doffin]   page {page} — {result.Hits.Count} hits (total: {result.NumHitsTotal})");
+            log.LogInformation("Page {Page} — {HitCount} hits (total: {TotalHits})", page, result.Hits.Count, result.NumHitsTotal);
 
             foreach (var hit in result.Hits)
             {
@@ -737,10 +770,12 @@ class DoffinService(IHttpClientFactory factory)
 
 // ─── MatchService ─────────────────────────────────────────────────────────────
 
-class MatchService(ReportService reportSvc, DoffinService doffinSvc)
+class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<MatchService> log)
 {
     private List<Match> _matches = [];
     public bool IsLoading { get; private set; }
+    public string? LastError { get; private set; }
+    public DateTime? LastLoadedAt { get; private set; }
     public IReadOnlyList<Match> Matches { get { lock (_matches) return _matches.ToList(); } }
 
     private static readonly string CacheFile = Path.Combine(
@@ -751,12 +786,14 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
     public async Task LoadAsync(bool forceRefresh = false)
     {
         IsLoading = true;
+        LastError = null;
         try
         {
             if (!forceRefresh && TryLoadCache(out var cached))
             {
                 lock (_matches) { _matches.Clear(); _matches.AddRange(cached!); }
-                Console.WriteLine($"[matches] Loaded {cached!.Count} matches from cache");
+                log.LogInformation("Loaded {Count} matches from cache", cached!.Count);
+                LastLoadedAt = DateTime.UtcNow;
                 return;
             }
 
@@ -766,6 +803,12 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
 
             RunComputeMatches();
             SaveCache();
+            LastLoadedAt = DateTime.UtcNow;
+        }
+        catch (Exception ex)
+        {
+            LastError = ex.Message;
+            throw;
         }
         finally { IsLoading = false; }
     }
@@ -790,9 +833,9 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
         {
             var json = JsonSerializer.Serialize(Matches, JsonOpts);
             File.WriteAllText(CacheFile, json);
-            Console.WriteLine($"[matches] Saved {Matches.Count} matches to {CacheFile}");
+            log.LogInformation("Saved {Count} matches to cache", Matches.Count);
         }
-        catch (Exception ex) { Console.WriteLine($"[matches] Cache save failed: {ex.Message}"); }
+        catch (Exception ex) { log.LogError(ex, "Cache save failed"); }
     }
 
     // ── Scoring Algorithm (REQ-03 + REQ-04) ─────────────────────────────────────
@@ -912,8 +955,8 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
     {
         var results = ComputeMatches(reportSvc.Reports, doffinSvc.Notices);
         lock (_matches) { _matches.Clear(); _matches.AddRange(results); }
-        Console.WriteLine($"[matches] Computed {results.Count} matches " +
-                          $"({reportSvc.Reports.Count} reports x {doffinSvc.Notices.Count} notices)");
+        log.LogInformation("Computed {Count} matches ({ReportCount} reports x {NoticeCount} notices)",
+            results.Count, reportSvc.Reports.Count, doffinSvc.Notices.Count);
     }
 
     internal static (double score, List<string> matched) ComputeKeywordScore(
