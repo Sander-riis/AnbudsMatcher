@@ -73,6 +73,43 @@ app.MapPost("/api/matches/refresh", (
     return Results.Accepted();
 });
 
+app.MapGet("/api/debug/doffin-test", async (IHttpClientFactory factory) =>
+{
+    var client = factory.CreateClient("doffin-api");
+    // Test 1: search API
+    var body = System.Text.Json.JsonSerializer.Serialize(new {
+        numHitsPerPage = 3, page = 1, searchString = "IKT", sortBy = "RELEVANCE",
+        facets = new {
+            type = new { checkedItems = new[] { "COMPETITION", "PLANNING" } },
+            contractNature = new { checkedItems = Array.Empty<string>() },
+            cpvCodesLabel = new { checkedItems = Array.Empty<string>() },
+            cpvCodesId = new { checkedItems = Array.Empty<string>() },
+            status = new { checkedItems = Array.Empty<string>() },
+            publicationDate = new { from = "2024-01-01", to = (string?)null },
+            location = new { checkedItems = Array.Empty<string>() },
+            buyer = new { checkedItems = Array.Empty<string>() },
+            winner = new { checkedItems = Array.Empty<string>() }
+        }
+    });
+    try {
+        var resp = await client.PostAsync("search-api/search",
+            new System.Net.Http.StringContent(body, System.Text.Encoding.UTF8, "application/json"));
+        var raw = await resp.Content.ReadAsStringAsync();
+        // Test 2: IsServiceContract for known Tjenester notice
+        string isTjenester = "not tested";
+        try {
+            var detailJson = await client.GetStringAsync("notices-api/notices/2026-103994");
+            using var doc = System.Text.Json.JsonDocument.Parse(detailJson);
+            if (doc.RootElement.TryGetProperty("eform", out var ef))
+                isTjenester = DoffinService.IsServiceContract(ef) ? "YES" : "NO";
+            else isTjenester = "no eform property";
+        } catch (Exception ex) { isTjenester = $"error: {ex.Message}"; }
+        return Results.Ok(new { status = (int)resp.StatusCode, isServiceContract_2026_103994 = isTjenester, preview = raw[..Math.Min(300, raw.Length)] });
+    } catch (Exception ex) {
+        return Results.Ok(new { error = ex.Message });
+    }
+});
+
 app.Run();
 
 // ─── Service ──────────────────────────────────────────────────────────────────
@@ -435,13 +472,16 @@ class DoffinService(IHttpClientFactory factory)
         if (eform.ValueKind != System.Text.Json.JsonValueKind.Array) return false;
         foreach (var block in eform.EnumerateArray())
         {
-            if (!block.TryGetProperty("sections", out var lvl1)) continue;
+            if (!block.TryGetProperty("sections", out var lvl1) ||
+                lvl1.ValueKind != System.Text.Json.JsonValueKind.Array) continue;
             foreach (var s1 in lvl1.EnumerateArray())
             {
-                if (!s1.TryGetProperty("sections", out var lvl2)) continue;
+                if (!s1.TryGetProperty("sections", out var lvl2) ||
+                    lvl2.ValueKind != System.Text.Json.JsonValueKind.Array) continue;
                 foreach (var s2 in lvl2.EnumerateArray())
                 {
-                    if (!s2.TryGetProperty("sections", out var lvl3)) continue;
+                    if (!s2.TryGetProperty("sections", out var lvl3) ||
+                        lvl3.ValueKind != System.Text.Json.JsonValueKind.Array) continue;
                     foreach (var leaf in lvl3.EnumerateArray())
                     {
                         var label = leaf.TryGetProperty("label", out var lv) ? lv.GetString() ?? "" : "";
@@ -507,9 +547,16 @@ class DoffinService(IHttpClientFactory factory)
         foreach (var term in SearchTerms)
         {
             Console.WriteLine($"[doffin] Scraping term: {term}");
-            var termNotices = await ScrapeTermAsync(apiClient, term);
-            Console.WriteLine($"[doffin]   → {termNotices.Count} notices for '{term}'");
-            allNotices.AddRange(termNotices);
+            try
+            {
+                var termNotices = await ScrapeTermAsync(apiClient, term);
+                Console.WriteLine($"[doffin]   → {termNotices.Count} notices for '{term}'");
+                allNotices.AddRange(termNotices);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[doffin]   → ERROR for '{term}': {ex.Message}");
+            }
         }
         Console.WriteLine($"[doffin] Total before dedup: {allNotices.Count}");
 
@@ -539,18 +586,16 @@ class DoffinService(IHttpClientFactory factory)
         });
         await Task.WhenAll(filterTasks);
 
-        // Phase 4: Apply 2025+ date filter and commit to _notices
-        var filtered = tjenesterList
-            .Where(n => DateOnly.TryParse(n.PublishedDate, out var d) && d.Year >= 2025)
-            .OrderBy(n => n.Id)
-            .ToList();
+        // Commit to _notices — sorted by original ID order
+        var sorted = tjenesterList.OrderBy(n => n.Id).ToList();
 
-        lock (_notices) { _notices.Clear(); _notices.AddRange(filtered); }
-        Console.WriteLine($"[doffin] Done — {_notices.Count} IT Tjenester notices loaded (2025+)");
+        lock (_notices) { _notices.Clear(); _notices.AddRange(sorted); }
+        Console.WriteLine($"[doffin] Done — {_notices.Count} IT Tjenester notices loaded");
     }
 
+    private static readonly int MaxPagesPerTerm = 5;  // 5 × 20 = 100 notices per term max
+
     /// <summary>
-    /// Paginates the Doffin REST search API for a single search term.
     /// POSTs to search-api/search, increments page until hits is empty.
     /// Maps each DoffinHit to a Notice with URL = https://www.doffin.no/notices/{id}.
     /// </summary>
@@ -575,7 +620,7 @@ class DoffinService(IHttpClientFactory factory)
                     cpvCodesLabel  = new { checkedItems = Array.Empty<string>() },
                     cpvCodesId     = new { checkedItems = Array.Empty<string>() },
                     status         = new { checkedItems = Array.Empty<string>() },
-                    publicationDate= new { from = (string?)null, to = (string?)null },
+                    publicationDate= new { from = "2022-01-01", to = (string?)null },
                     location       = new { checkedItems = Array.Empty<string>() },
                     buyer          = new { checkedItems = Array.Empty<string>() },
                     winner         = new { checkedItems = Array.Empty<string>() }
@@ -590,7 +635,7 @@ class DoffinService(IHttpClientFactory factory)
             var result = System.Text.Json.JsonSerializer.Deserialize<DoffinSearchResult>(
                 await resp.Content.ReadAsStringAsync(), DoffinApiOpts);
 
-            if (result == null || result.Hits.Count == 0) break;
+            if (result == null || result.Hits.Count == 0 || page > MaxPagesPerTerm) break;
 
             foreach (var hit in result.Hits)
             {
