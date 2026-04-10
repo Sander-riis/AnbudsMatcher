@@ -15,6 +15,14 @@ builder.Services.AddHttpClient("rr", c =>
     c.Timeout = TimeSpan.FromSeconds(30);
 });
 
+builder.Services.AddHttpClient("doffin-api", c =>
+{
+    c.BaseAddress = new Uri("https://api.doffin.no/webclient/api/v2/");
+    c.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (compatible; RRDashboard/1.0)");
+    c.DefaultRequestHeaders.Add("Accept", "application/json");
+    c.Timeout = TimeSpan.FromSeconds(30);
+});
+
 builder.Services.AddSingleton<ReportService>();
 builder.Services.AddSingleton<DoffinService>();
 builder.Services.AddSingleton<MatchService>();
@@ -168,20 +176,22 @@ class ReportService(IHttpClientFactory factory)
         });
 
         await Task.WhenAll(enrichTasks);
-        Console.WriteLine($"[scrape] Done — {_reports.Count} reports loaded");
+        lock (_reports) _reports.RemoveAll(r =>
+            !DateOnly.TryParse(r.PublishedDate, out var d) || d.Year < 2025);
+        Console.WriteLine($"[scrape] Done — {_reports.Count} reports loaded (2025+)");
     }
 
     static async Task<List<Report>> FetchListPage(HttpClient client, int page)
     {
         try
         {
-            var html = await client.GetStringAsync($"/rapporter/?p={page}");
+            var html = await client.GetStringAsync($"/rapporter/?q=Digitalisering/ikt&p={page}");
             return ParseListPage(html, page);
         }
         catch { return []; }
     }
 
-    static List<Report> ParseListPage(string html, int page)
+    internal static List<Report> ParseListPage(string html, int page)
     {
         var results = new List<Report>();
         var blockRx = new Regex(
@@ -260,7 +270,17 @@ record Notice(int Id, string Title, string Buyer, string PublishedDate,
               string Url, string Description);
 
 record Match(int ReportId, int NoticeId, double Score,
-             string[] MatchedKeywords, string? MatchedOrg);
+             string[] MatchedKeywords, string? MatchedOrg, string[]? MatchedBigrams = null);
+
+// ─── Cache + Doffin API records ───────────────────────────────────────────────
+
+record CacheEnvelope<T>(string Version, List<T> Data);
+
+// Doffin REST API response DTOs (api.doffin.no/webclient/api/v2/search-api/search)
+// Deserialised with PropertyNameCaseInsensitive = true (see DoffinApiOpts in DoffinService)
+record DoffinSearchResult(int NumHitsTotal, int NumHitsAccessible, List<DoffinHit> Hits);
+record DoffinHit(string Id, string Heading, List<DoffinBuyer> Buyer, string Description, string PublicationDate);
+record DoffinBuyer(string Id, string Name);
 
 // ─── DoffinService ────────────────────────────────────────────────────────────
 
@@ -270,6 +290,22 @@ class DoffinService
         AppContext.BaseDirectory, "notices-cache.json");
     private static readonly TimeSpan CacheMaxAge = TimeSpan.FromHours(12);
     private static readonly JsonSerializerOptions JsonOpts = new() { WriteIndented = true };
+
+    private static readonly string[] SearchTerms =
+        ["IKT", "IT", "utvikling", "programvare", "skytjeneste", "digitalisering"];
+
+    private static readonly string SearchVersion =
+        $"it-v1|{string.Join(",", SearchTerms)}|COMPETITION,PLANNING";
+
+    // Paths to the other two cache files — needed for atomic version-mismatch cleanup
+    private static readonly string ReportsCacheFile = Path.Combine(
+        AppContext.BaseDirectory, "reports-cache.json");
+    private static readonly string MatchesCacheFile = Path.Combine(
+        AppContext.BaseDirectory, "matches-cache.json");
+    private static readonly JsonSerializerOptions DoffinApiOpts = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
 
     private List<Notice> _notices = [];
     public bool IsLoading { get; private set; }
@@ -310,7 +346,9 @@ class DoffinService
         try
         {
             var json = File.ReadAllText(CacheFile);
-            notices = JsonSerializer.Deserialize<List<Notice>>(json, JsonOpts);
+            var env = JsonSerializer.Deserialize<CacheEnvelope<Notice>>(json, JsonOpts);
+            if (env?.Version != SearchVersion) return false;  // version mismatch → stale
+            notices = env.Data;
             return notices?.Count > 0;
         }
         catch { return false; }
@@ -320,11 +358,83 @@ class DoffinService
     {
         try
         {
-            var json = JsonSerializer.Serialize(Notices, JsonOpts);
+            var envelope = new CacheEnvelope<Notice>(SearchVersion, Notices.ToList());
+            var json = JsonSerializer.Serialize(envelope, JsonOpts);
             File.WriteAllText(CacheFile, json);
             Console.WriteLine($"[doffin] Saved {Notices.Count} notices to {CacheFile}");
         }
         catch (Exception ex) { Console.WriteLine($"[doffin] Cache save failed: {ex.Message}"); }
+    }
+
+    /// <summary>
+    /// Returns true if the notice eForm JSON contains a "Kontraktens art" = "Tjenester" entry
+    /// (new Norwegian eForm format, 2023+) OR "Nature of the contract" = "Services" (old format).
+    /// Recurses through: blocks → sections (level 1) → sections (level 2) → sections (level 3/leaf).
+    /// </summary>
+    internal static bool IsServiceContract(System.Text.Json.JsonElement eform)
+    {
+        if (eform.ValueKind != System.Text.Json.JsonValueKind.Array) return false;
+        foreach (var block in eform.EnumerateArray())
+        {
+            if (!block.TryGetProperty("sections", out var lvl1)) continue;
+            foreach (var s1 in lvl1.EnumerateArray())
+            {
+                if (!s1.TryGetProperty("sections", out var lvl2)) continue;
+                foreach (var s2 in lvl2.EnumerateArray())
+                {
+                    if (!s2.TryGetProperty("sections", out var lvl3)) continue;
+                    foreach (var leaf in lvl3.EnumerateArray())
+                    {
+                        var label = leaf.TryGetProperty("label", out var lv) ? lv.GetString() ?? "" : "";
+                        var value = leaf.TryGetProperty("value", out var vv) ? vv.GetString() ?? "" : "";
+                        if ((label == "Kontraktens art" && value == "Tjenester") ||
+                            (label == "Nature of the contract" && value == "Services"))
+                            return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Merges notices from multiple search terms, deduplicates by URL (exact string match),
+    /// skips notices with empty/null URL to avoid false collisions, and re-assigns sequential IDs
+    /// starting at 1. Keeps the first occurrence when a URL appears more than once.
+    /// </summary>
+    internal static List<Notice> DeduplicateNotices(List<Notice> all)
+    {
+        return all
+            .Where(n => !string.IsNullOrEmpty(n.Url))
+            .GroupBy(n => n.Url)
+            .Select(g => g.First())
+            .Select((n, i) => n with { Id = i + 1 })
+            .ToList();
+    }
+
+    /// <summary>
+    /// Returns true if the cache file exists but its version envelope does not match expectedVersion.
+    /// Returns false if the file doesn't exist (no mismatch — just absent).
+    /// </summary>
+    internal static bool CheckVersionMismatch(string cacheFile, string expectedVersion)
+    {
+        if (!File.Exists(cacheFile)) return false;
+        try
+        {
+            var json = File.ReadAllText(cacheFile);
+            var env = JsonSerializer.Deserialize<CacheEnvelope<Notice>>(json);
+            return env?.Version != expectedVersion;
+        }
+        catch { return true; }  // corrupt → treat as mismatch
+    }
+
+    /// <summary>
+    /// Deletes the three cache files atomically. Used when version mismatch is detected.
+    /// </summary>
+    internal static void PurgeAllCaches(string noticesFile, string reportsFile, string matchesFile)
+    {
+        foreach (var f in new[] { noticesFile, reportsFile, matchesFile })
+            if (File.Exists(f)) File.Delete(f);
     }
 
     private async Task ScrapeAsync()
@@ -371,7 +481,9 @@ class DoffinService
             finally { sem.Release(); }
         });
         await Task.WhenAll(enrichTasks);
-        Console.WriteLine($"[doffin] Done — {_notices.Count} notices loaded");
+        lock (_notices) _notices.RemoveAll(n =>
+            !DateOnly.TryParse(n.PublishedDate, out var d) || d.Year < 2025);
+        Console.WriteLine($"[doffin] Done — {_notices.Count} notices loaded (2025+)");
     }
 
     private static async Task<(List<Notice> notices, bool hasNextPage)> ScrapeListPage(
@@ -522,30 +634,106 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
         IReadOnlyList<Notice> notices)
     {
         var results = new List<Match>();
+        var idf = ComputeIDF(notices);
 
         foreach (var report in reports)
         {
             var keywords = ExtractKeywords(report.Title + " " + report.Summary);
-            if (keywords.Count == 0) continue;  // guard: avoids division-by-zero in keyword_score
+            if (keywords.Count == 0) continue;
 
+            var bigrams  = ExtractBigrams(report.Title);
             var normDept = NormalizeDepartment(report.Department);
+            DateOnly.TryParse(report.PublishedDate, out var reportDate);
 
             foreach (var notice in notices)
             {
-                var (keyScore, matchedKw) = ComputeKeywordScore(keywords, notice);
+                var (keyScore, matchedKw) = ComputeKeywordScore(keywords, notice, idf);
                 var (orgScore, matchedOrg) = ComputeOrgScore(normDept, notice);
-                var combined = keyScore * 0.6 + orgScore * 0.4;
 
-                if (combined > 15)
+                // Gate: require org match when keyword signal is weak (avoids generic-word false positives)
+                if (orgScore == 0 && keyScore < 40) continue;
+
+                var (bigramScore, matchedBg) = ComputeBigramScore(bigrams, notice);
+
+                // Small bonus when notice is published after the report (procurement follows audit)
+                double dateFactor = 1.0;
+                if (reportDate != default &&
+                    DateOnly.TryParse(notice.PublishedDate, out var noticeDate) &&
+                    noticeDate >= reportDate)
+                    dateFactor = 1.05;
+
+                var combined = (keyScore * 0.5 + bigramScore * 0.2 + orgScore * 0.3) * dateFactor;
+
+                if (combined > 35)
                     results.Add(new Match(
                         report.Id, notice.Id,
                         Math.Round(combined, 1),
                         matchedKw.ToArray(),
-                        matchedOrg));
+                        matchedOrg,
+                        matchedBg.Count > 0 ? matchedBg.ToArray() : null));
             }
         }
 
         return results;
+    }
+
+    /// Compute inverse document frequency over the notices corpus.
+    /// Rare, domain-specific terms get higher weight than common words.
+    internal static Dictionary<string, double> ComputeIDF(IReadOnlyList<Notice> notices)
+    {
+        var df = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        foreach (var notice in notices)
+        {
+            var tokens = TokenRegex
+                .Split((notice.Title + " " + notice.Description).ToLowerInvariant())
+                .Where(w => w.Length >= 3 && !Stopwords.Contains(w))
+                .Select(Stem)
+                .Distinct();
+            foreach (var w in tokens)
+                df[w] = df.GetValueOrDefault(w, 0) + 1;
+        }
+        int n = notices.Count;
+        return df.ToDictionary(
+            kv => kv.Key,
+            kv => Math.Log((1.0 + n) / (1.0 + kv.Value)) + 1.0,
+            StringComparer.OrdinalIgnoreCase);
+    }
+
+    /// Extract adjacent-word bigrams from a report title (no stopwords).
+    internal static List<string> ExtractBigrams(string? title)
+    {
+        if (string.IsNullOrWhiteSpace(title)) return [];
+        var words = TokenRegex
+            .Split(title.ToLowerInvariant())
+            .Where(w => w.Length >= 3 && !Stopwords.Contains(w))
+            .ToList();
+        var bigrams = new List<string>();
+        for (int i = 0; i < words.Count - 1; i++)
+            bigrams.Add(words[i] + " " + words[i + 1]);
+        return bigrams;
+    }
+
+    /// Score how many bigrams from the report title appear verbatim in the notice.
+    internal static (double score, List<string> matched) ComputeBigramScore(
+        List<string> bigrams, Notice notice)
+    {
+        if (bigrams.Count == 0) return (0.0, []);
+        var noticeText = (notice.Title + " " + notice.Description).ToLowerInvariant();
+        var matched = bigrams.Where(bg => noticeText.Contains(bg)).ToList();
+        return ((matched.Count / (double)bigrams.Count) * 100.0, matched);
+    }
+
+    /// Simplified Norwegian suffix stemmer (Snowball-inspired).
+    internal static string Stem(string word)
+    {
+        string[] suffixes = [
+            "igheter", "ighet", "inger", "elsen", "elser", "else",
+            "ingen", "eten", "eter", "ene", "ing", "lig", "het", "er", "en", "es"
+        ];
+        foreach (var suffix in suffixes)
+            if (word.Length > suffix.Length + 3 && word.EndsWith(suffix))
+                return word[..^suffix.Length];
+        return word;
     }
 
     private void RunComputeMatches()
@@ -557,13 +745,27 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
     }
 
     internal static (double score, List<string> matched) ComputeKeywordScore(
-        List<string> keywords, Notice notice)
+        List<string> keywords, Notice notice, Dictionary<string, double>? idf = null)
     {
         if (keywords.Count == 0) return (0.0, []);
 
-        var noticeText = (notice.Title + " " + notice.Description).ToLowerInvariant();
-        var matched = keywords.Where(kw => noticeText.Contains(kw)).ToList();
-        var score = (matched.Count / (double)keywords.Count) * 100.0;
+        var stemmedNoticeTokens = new HashSet<string>(
+            TokenRegex
+                .Split((notice.Title + " " + notice.Description).ToLowerInvariant())
+                .Where(w => w.Length >= 3)
+                .Select(Stem),
+            StringComparer.OrdinalIgnoreCase);
+
+        var matched = keywords.Where(kw => stemmedNoticeTokens.Contains(Stem(kw))).ToList();
+
+        // Require at least 3 keyword hits to avoid single-word false positives
+        if (matched.Count < 3) return (0.0, matched);
+
+        var idfMap = idf ?? new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+        double totalWeight   = keywords.Sum(kw => idfMap.GetValueOrDefault(Stem(kw), 1.0));
+        double matchedWeight = matched.Sum(kw => idfMap.GetValueOrDefault(Stem(kw), 1.0));
+        double score = totalWeight > 0 ? (matchedWeight / totalWeight) * 100.0 : 0.0;
+
         return (score, matched);
     }
 
