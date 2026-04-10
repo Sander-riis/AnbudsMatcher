@@ -284,7 +284,7 @@ record DoffinBuyer(string Id, string Name);
 
 // ─── DoffinService ────────────────────────────────────────────────────────────
 
-class DoffinService
+class DoffinService(IHttpClientFactory factory)
 {
     private static readonly string CacheFile = Path.Combine(
         AppContext.BaseDirectory, "notices-cache.json");
@@ -316,6 +316,14 @@ class DoffinService
         IsLoading = true;
         try
         {
+            // Version mismatch check: if cache file exists but has a stale version,
+            // purge all three caches before loading to prevent cross-cache ID mismatches.
+            if (!forceRefresh && CheckVersionMismatch(CacheFile, SearchVersion))
+            {
+                Console.WriteLine("[doffin] Cache version mismatch — purging all three caches");
+                PurgeAllCaches(CacheFile, ReportsCacheFile, MatchesCacheFile);
+            }
+
             if (!forceRefresh && TryLoadCache(out var cached))
             {
                 lock (_notices) { _notices.Clear(); _notices.AddRange(cached!); }
@@ -323,19 +331,10 @@ class DoffinService
                 return;
             }
 
-            await EnsureBrowsersInstalled();
             await ScrapeAsync();
             SaveCache();
         }
         finally { IsLoading = false; }
-    }
-
-    private static Task EnsureBrowsersInstalled()
-    {
-        var exitCode = Microsoft.Playwright.Program.Main(new[] { "install", "chromium" });
-        if (exitCode != 0)
-            Console.WriteLine($"[doffin] WARNING: browser install failed with code {exitCode}");
-        return Task.CompletedTask;
     }
 
     private bool TryLoadCache(out List<Notice>? notices)
@@ -441,128 +440,132 @@ class DoffinService
     {
         lock (_notices) _notices.Clear();
 
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(
-            new() { Headless = true });
+        var apiClient = factory.CreateClient("doffin-api");
+        var allNotices = new List<Notice>();
 
-        // Phase 1: Paginate list pages sequentially
-        int pageNum = 1;
-        while (true)
+        // Phase 1: Run one paginated scrape per search term — SEQUENTIALLY to avoid Doffin overload
+        foreach (var term in SearchTerms)
         {
-            var (notices, hasNext) = await ScrapeListPage(browser, pageNum);
-            lock (_notices) _notices.AddRange(notices);
-            if (!hasNext) break;
-            pageNum++;
+            Console.WriteLine($"[doffin] Scraping term: {term}");
+            var termNotices = await ScrapeTermAsync(apiClient, term);
+            Console.WriteLine($"[doffin]   → {termNotices.Count} notices for '{term}'");
+            allNotices.AddRange(termNotices);
         }
-        Console.WriteLine($"[doffin] Found {_notices.Count} notices across {pageNum} pages");
+        Console.WriteLine($"[doffin] Total before dedup: {allNotices.Count}");
 
-        // Phase 2: Fetch detail descriptions in parallel with SemaphoreSlim(5)
+        // Phase 2: Deduplicate by URL — keep first occurrence, re-assign sequential IDs
+        var deduped = DeduplicateNotices(allNotices);
+        Console.WriteLine($"[doffin] After dedup: {deduped.Count} unique notices");
+
+        // Phase 3: Post-filter — keep only Tjenester (service) contracts
+        // Fetch detail JSON from api.doffin.no for each notice; use SemaphoreSlim(5) for concurrency
         var sem = new SemaphoreSlim(5);
-        List<Notice> snapshot;
-        lock (_notices) snapshot = _notices.ToList();
+        var tjenesterList = new System.Collections.Concurrent.ConcurrentBag<Notice>();
 
-        var enrichTasks = snapshot.Select(async notice =>
+        var filterTasks = deduped.Select(async notice =>
         {
             await sem.WaitAsync();
             try
             {
-                var description = await FetchDetailDescription(browser, notice.Url);
-                var enriched = notice with { Description = description };
-                lock (_notices)
-                {
-                    var idx = _notices.FindIndex(n => n.Id == notice.Id);
-                    if (idx >= 0) _notices[idx] = enriched;
-                }
+                var isTjenester = await FetchAndCheckTjenester(apiClient, notice.Url);
+                if (isTjenester) tjenesterList.Add(notice);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[doffin] Detail fetch failed for {notice.Url}: {ex.Message}");
+                Console.WriteLine($"[doffin] Detail check failed for {notice.Url}: {ex.Message}");
+                // On error: exclude the notice (conservative — avoids non-IT notices slipping through)
             }
             finally { sem.Release(); }
         });
-        await Task.WhenAll(enrichTasks);
-        lock (_notices) _notices.RemoveAll(n =>
-            !DateOnly.TryParse(n.PublishedDate, out var d) || d.Year < 2025);
-        Console.WriteLine($"[doffin] Done — {_notices.Count} notices loaded (2025+)");
+        await Task.WhenAll(filterTasks);
+
+        // Phase 4: Apply 2025+ date filter and commit to _notices
+        var filtered = tjenesterList
+            .Where(n => DateOnly.TryParse(n.PublishedDate, out var d) && d.Year >= 2025)
+            .OrderBy(n => n.Id)
+            .ToList();
+
+        lock (_notices) { _notices.Clear(); _notices.AddRange(filtered); }
+        Console.WriteLine($"[doffin] Done — {_notices.Count} IT Tjenester notices loaded (2025+)");
     }
 
-    private static async Task<(List<Notice> notices, bool hasNextPage)> ScrapeListPage(
-        IBrowser browser, int pageNum)
+    /// <summary>
+    /// Paginates the Doffin REST search API for a single search term.
+    /// POSTs to search-api/search, increments page until hits is empty.
+    /// Maps each DoffinHit to a Notice with URL = https://www.doffin.no/notices/{id}.
+    /// </summary>
+    private async Task<List<Notice>> ScrapeTermAsync(HttpClient apiClient, string term)
     {
-        var page = await browser.NewPageAsync();
-        try
+        var notices = new List<Notice>();
+        int page = 1;
+        int globalId = 1;  // Temporary ID — will be re-assigned by DeduplicateNotices
+
+        while (true)
         {
-            await page.GotoAsync(
-                $"https://www.doffin.no/search?searchString=helfo&page={pageNum}",
-                new() { WaitUntil = WaitUntilState.NetworkIdle, Timeout = 30_000 });
-
-            try
+            var requestBody = new
             {
-                await page.WaitForSelectorAsync("a[class*=card]", new() { Timeout = 10_000 });
-            }
-            catch
+                numHitsPerPage = 20,
+                page,
+                searchString = term,
+                sortBy = "RELEVANCE",
+                facets = new
+                {
+                    type           = new { checkedItems = new[] { "COMPETITION", "PLANNING" } },
+                    contractNature = new { checkedItems = Array.Empty<string>() },
+                    cpvCodesLabel  = new { checkedItems = Array.Empty<string>() },
+                    cpvCodesId     = new { checkedItems = Array.Empty<string>() },
+                    status         = new { checkedItems = Array.Empty<string>() },
+                    publicationDate= new { from = (string?)null, to = (string?)null },
+                    location       = new { checkedItems = Array.Empty<string>() },
+                    buyer          = new { checkedItems = Array.Empty<string>() },
+                    winner         = new { checkedItems = Array.Empty<string>() }
+                }
+            };
+
+            var body    = System.Text.Json.JsonSerializer.Serialize(requestBody);
+            var content = new System.Net.Http.StringContent(body, System.Text.Encoding.UTF8, "application/json");
+            var resp    = await apiClient.PostAsync("search-api/search", content);
+            resp.EnsureSuccessStatusCode();
+
+            var result = System.Text.Json.JsonSerializer.Deserialize<DoffinSearchResult>(
+                await resp.Content.ReadAsStringAsync(), DoffinApiOpts);
+
+            if (result == null || result.Hits.Count == 0) break;
+
+            foreach (var hit in result.Hits)
             {
-                return ([], false);
+                var buyer  = hit.Buyer?.FirstOrDefault()?.Name ?? "";
+                var url    = $"https://www.doffin.no/notices/{hit.Id}";
+                notices.Add(new Notice(globalId++, hit.Heading, buyer, hit.PublicationDate, url, hit.Description ?? ""));
             }
 
-            var cards = await page.QuerySelectorAllAsync("a[class*=card]");
-            var notices = new List<Notice>();
-            int id = (pageNum - 1) * 20 + 1;
-
-            foreach (var card in cards)
-            {
-                var href = await card.GetAttributeAsync("href") ?? "";
-                var titleEl = await card.QuerySelectorAsync("[data-testid='notice-card-title']");
-                var title = (await titleEl?.TextContentAsync()!)?.Trim() ?? "";
-                var buyerEl = await card.QuerySelectorAsync("p[class*=buyer]");
-                var buyer = (await buyerEl?.TextContentAsync()!)?.Trim() ?? "";
-                var dateEl = await card.QuerySelectorAsync("p[class*=issue_date]");
-                var dateLabel = (await dateEl?.GetAttributeAsync("aria-label")!) ?? "";
-
-                var dateMatch = Regex.Match(dateLabel, @"(\d{2}\.\d{2}\.\d{4})");
-                var pubDate = "";
-                if (dateMatch.Success &&
-                    DateOnly.TryParseExact(dateMatch.Groups[1].Value, "dd.MM.yyyy", out var d))
-                    pubDate = d.ToString("yyyy-MM-dd");
-
-                var noticeUrl = $"https://www.doffin.no{href}";
-                notices.Add(new Notice(id++, title, buyer, pubDate, noticeUrl, ""));
-            }
-
-            var nextBtn = await page.QuerySelectorAsync("[data-cy='Neste side']");
-            bool hasNext = nextBtn != null &&
-                           await nextBtn.GetAttributeAsync("disabled") == null;
-
-            return (notices, hasNext);
+            page++;
         }
-        finally
-        {
-            await page.CloseAsync();
-        }
+
+        return notices;
     }
 
-    private static async Task<string> FetchDetailDescription(IBrowser browser, string url)
+    /// <summary>
+    /// Fetches the notice detail JSON from api.doffin.no and checks if it is a Tjenester contract.
+    /// Extracts the Doffin notice ID from the www.doffin.no URL:
+    ///   https://www.doffin.no/notices/2026-103994  →  id = "2026-103994"
+    /// Then calls GET https://api.doffin.no/webclient/api/v2/notices-api/notices/{id}
+    /// Returns false if the detail call fails or eform is absent.
+    /// </summary>
+    private static async Task<bool> FetchAndCheckTjenester(HttpClient apiClient, string noticeUrl)
     {
-        var page = await browser.NewPageAsync();
-        try
-        {
-            await page.GotoAsync(url,
-                new() { WaitUntil = WaitUntilState.NetworkIdle, Timeout = 30_000 });
+        // Extract Doffin notice ID from the www.doffin.no URL
+        var lastSlash = noticeUrl.LastIndexOf('/');
+        if (lastSlash < 0) return false;
+        var noticeId = noticeUrl[(lastSlash + 1)..];
+        if (string.IsNullOrWhiteSpace(noticeId)) return false;
 
-            try
-            {
-                await page.WaitForSelectorAsync("h1", new() { Timeout = 10_000 });
-            }
-            catch { return ""; }
+        // Call the REST API detail endpoint — NOT www.doffin.no (that returns SPA shell)
+        var detailJson = await apiClient.GetStringAsync($"notices-api/notices/{noticeId}");
+        using var doc  = System.Text.Json.JsonDocument.Parse(detailJson);
 
-            var descEl = await page.QuerySelectorAsync("p[class*=content_section_description]");
-            return (await descEl?.TextContentAsync()!)?.Trim() ?? "";
-        }
-        catch { return ""; }
-        finally
-        {
-            await page.CloseAsync();
-        }
+        if (!doc.RootElement.TryGetProperty("eform", out var eform)) return false;
+        return IsServiceContract(eform);
     }
 }
 
