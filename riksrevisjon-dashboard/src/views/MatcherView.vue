@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, RouterLink } from 'vue-router'
 
 // ── State ────────────────────────────────────────────────────────────────
 const reports    = ref([])
@@ -160,6 +160,19 @@ async function refreshData() {
 <template>
   <div class="matcher-body">
 
+    <!-- Page nav -->
+    <div class="matcher-topnav">
+      <div class="matcher-brand">
+        <span class="mono muted">RIKSREVISJONEN</span>
+        <span class="sep">·</span>
+        <span class="page-title-sm">Anbud<em>matcher</em></span>
+      </div>
+      <nav class="matcher-tabs">
+        <RouterLink to="/" exact-active-class="active" class="tab mono">Rapporter</RouterLink>
+        <RouterLink to="/matcher" active-class="active" class="tab mono">Anbudsmatcher</RouterLink>
+      </nav>
+    </div>
+
     <!-- Toolbar -->
     <div class="matcher-toolbar">
       <button
@@ -228,6 +241,15 @@ async function refreshData() {
 
             <span class="row-title">{{ report.title }}</span>
 
+            <a
+              v-if="report.url"
+              :href="report.url"
+              target="_blank"
+              rel="noopener"
+              class="rapport-link mono"
+              @click.stop
+            >Les rapport →</a>
+
             <span
               class="badge mono"
               :style="{ color: severityColor[report.severity], borderColor: severityColor[report.severity] }"
@@ -292,6 +314,15 @@ async function refreshData() {
                   :key="kw"
                   class="kw-tag mono"
                 >{{ kw }}</span>
+              </div>
+
+              <div v-if="m.matchedBigrams?.length" class="keyword-tags bigram-tags">
+                <span class="kw-tag mono tag-label">fraser:</span>
+                <span
+                  v-for="bg in m.matchedBigrams"
+                  :key="bg"
+                  class="kw-tag mono kw-tag--bigram"
+                >{{ bg }}</span>
               </div>
             </div>
           </div>
@@ -376,6 +407,20 @@ async function refreshData() {
   line-height: 1.35;
   text-align: left;
 }
+
+.rapport-link {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 0.2rem 0.55rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+.rapport-link:hover { border-color: var(--muted); color: var(--text); }
 
 .badge {
   font-size: 0.52rem;
@@ -506,14 +551,71 @@ async function refreshData() {
   border-radius: 2px;
   color: var(--muted);
 }
+.kw-tag--bigram {
+  background: rgba(82, 121, 111, 0.08);
+  border-color: rgba(82, 121, 111, 0.3);
+  color: #52796f;
+}
+.tag-label {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* ── Matcher topnav ────────────────────────────────────────────────────── */
+.matcher-topnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  background: var(--surf);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  margin: -3rem -2rem 2.5rem;
+}
+.matcher-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.matcher-brand .mono { font-size: 0.62rem; letter-spacing: 0.16em; }
+.page-title-sm {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.page-title-sm em { font-style: italic; color: #e63946; }
+.matcher-tabs { display: flex; gap: 0.25rem; }
 
 /* ── Matcher toolbar ───────────────────────────────────────────────────── */
 .matcher-toolbar {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-bottom: 1.5rem;
 }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.chip:disabled { opacity: 0.5; cursor: not-allowed; }
+.chip:not(:disabled):hover { border-color: var(--muted); color: var(--text); }
+.chip.active { background: var(--surf2); border-color: var(--chip-c, var(--text)); color: var(--chip-c, var(--text)); }
+.chip-n { font-style: normal; background: var(--surf); border-radius: 2px; padding: 0.1rem 0.35rem; font-size: 0.55rem; color: var(--dim); }
+.year-chip.active { --chip-c: #52796f; }
 
 .filter-banner {
   display: flex;

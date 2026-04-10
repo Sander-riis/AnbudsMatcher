@@ -28,11 +28,11 @@ public class IntegrationTests
     ];
 
     [Fact]
-    public void ComputeMatches_ReturnsOnlyScoresAboveFifteen()
+    public void ComputeMatches_ReturnsOnlyScoresAboveThreshold()
     {
         var matches = MatchService.ComputeMatches(TestReports, TestNotices);
-        Assert.All(matches, m => Assert.True(m.Score > 15,
-            $"Match score {m.Score} is not > 15 (reportId={m.ReportId}, noticeId={m.NoticeId})"));
+        Assert.All(matches, m => Assert.True(m.Score > 35,
+            $"Match score {m.Score} is not > 35 (reportId={m.ReportId}, noticeId={m.NoticeId})"));
     }
 
     [Fact]
@@ -56,5 +56,31 @@ public class IntegrationTests
         // "norsk helsenett sf".Contains("helse") = true → orgScore = 100 → combined >= 40 > 15
         var matches = MatchService.ComputeMatches(TestReports, TestNotices);
         Assert.Contains(matches, m => m.ReportId == 1 && m.NoticeId == 42);
+    }
+
+    [Fact]
+    public void ComputeMatches_HelseplattformenMatchesTitleWordBonus()
+    {
+        // Simulates the Helseplattformen scenario: title-word + org match pushes score above threshold
+        var reports = new List<Report>
+        {
+            new(10, "Helseplattformen i Midt-Norge",
+                "Riksrevisjonens undersøkelse av Helseplattformen",
+                "Kritikkverdig", "2024-06-01", "Helse ·", "https://riksrevisjonen.no/hp")
+        };
+        var notices = new List<Notice>
+        {
+            new(200, "Analyse av fordeler og ulemper ved helseplattformen",
+                "Helse- og omsorgsdepartementet", "2025-01-15", "https://doffin.no/200",
+                "Stortingets vedtak om oppfølging av Riksrevisjonens rapport")
+        };
+        var matches = MatchService.ComputeMatches(reports, notices);
+        Assert.Single(matches);
+        var m = matches[0];
+        Assert.Equal(10, m.ReportId);
+        Assert.Equal(200, m.NoticeId);
+        Assert.True(m.Score > 35, $"Expected score > 35, got {m.Score}");
+        Assert.NotNull(m.MatchedTitleWords);
+        Assert.Contains("helseplattformen", m.MatchedTitleWords!);
     }
 }

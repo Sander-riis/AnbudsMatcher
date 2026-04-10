@@ -4,9 +4,10 @@ import { RouterLink } from 'vue-router'
 
 const reports = ref([])
 const matches = ref([])
+const notices = ref([])
 const loading = ref(true)
 const activeFilter = ref('Alle')
-const searchQuery = ref('')
+const searchQuery  = ref('')
 let pollTimer = null
 
 const filters = ['Alle', 'Sterkt kritikkverdig', 'Kritikkverdig', 'Ikke tilfredsstillende', 'Ingen karakter']
@@ -21,14 +22,17 @@ const severityMeta = {
 const severityOrder = { 'Sterkt kritikkverdig': 0, 'Kritikkverdig': 1, 'Ikke tilfredsstillende': 2, 'Ingen karakter': 3 }
 
 async function fetchReports() {
-  const [rRes, mRes] = await Promise.all([
+  const [rRes, mRes, nRes] = await Promise.all([
     fetch('/api/reports'),
     fetch('/api/matches'),
+    fetch('/api/notices'),
   ])
   const rData = await rRes.json()
   const mData = await mRes.json()
-  reports.value = rData.reports
-  matches.value = mData.matches ?? []
+  const nData = await nRes.json()
+  reports.value  = rData.reports
+  matches.value  = mData.matches ?? []
+  notices.value  = nData.notices ?? []
   if (rData.loading) {
     pollTimer = setTimeout(fetchReports, 2000)
   } else {
@@ -98,17 +102,20 @@ function fmtDate(d) {
 <template>
   <div class="shell">
 
-    <header class="hdr">
-      <div class="hdr-inner">
-        <div class="hdr-eye">
+    <!-- ── PAGE HEADER + NAV ── -->
+    <div class="page-top">
+      <div class="page-top-inner">
+        <div class="page-brand">
           <span class="mono muted">RIKSREVISJONEN</span>
           <span class="sep">·</span>
-          <span class="mono muted">{{ new Date().getFullYear() }}</span>
+          <h1 class="page-title">Rapport<em>oversikt</em></h1>
         </div>
-        <h1 class="hdr-title">Rapport<em>oversikt</em></h1>
-        <p class="hdr-sub mono">Alle offentliggjorte undersøkelser sortert etter alvorlighetsgrad</p>
+        <nav class="page-tabs">
+          <RouterLink to="/" exact-active-class="active" class="tab mono">Rapporter</RouterLink>
+          <RouterLink to="/matcher" active-class="active" class="tab mono">Anbudsmatcher</RouterLink>
+        </nav>
       </div>
-    </header>
+    </div>
 
     <!-- ── DISTRIBUTION CHART ── -->
     <div class="chart-section">
@@ -195,6 +202,7 @@ function fmtDate(d) {
           <div class="grid">
             <article v-for="(r, i) in items" :key="r.id" class="card"
               :style="{ animationDelay: `${i * 50}ms` }">
+              <a :href="r.url" target="_blank" rel="noopener" class="card-link" :aria-label="r.title"></a>
               <div class="card-stripe"></div>
               <div class="card-content">
                 <div class="card-top">
@@ -215,9 +223,6 @@ function fmtDate(d) {
                 >
                   {{ matchCountMap.get(r.id) }} anbudstreff
                 </RouterLink>
-                <a :href="r.url" target="_blank" rel="noopener" class="link mono">
-                  Les rapport <span aria-hidden="true">→</span>
-                </a>
               </div>
             </article>
           </div>
@@ -233,33 +238,37 @@ function fmtDate(d) {
 </template>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Space+Mono:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg:      #f5f3f0;
-  --surf:    #ffffff;
-  --surf2:   #f0ede9;
-  --border:  #ddd9d4;
-  --text:    #1a1815;
-  --muted:   #6b6560;
-  --dim:     #a09b95;
+/* ── PAGE TOP ───────────────────────────── */
+.page-top {
+  background: var(--surf);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 0;
 }
-
-html { scroll-behavior: smooth; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-size: 16px;
-  line-height: 1.6;
-  min-height: 100vh;
+.page-top-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
-
-.mono { font-family: 'Space Mono', monospace; }
-.muted { color: var(--muted); }
-.small { font-size: 0.75em; }
+.page-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.page-brand .mono { font-size: 0.62rem; letter-spacing: 0.16em; }
+.page-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.page-title em { font-style: italic; font-weight: 700; color: #e63946; }
+.page-tabs { display: flex; gap: 0.25rem; }
 
 /* ── CHART ──────────────────────────────── */
 .chart-section {
@@ -323,43 +332,6 @@ body {
 .bar-count { font-size: 0.65rem; text-align: right; font-weight: 700; }
 .bar-pct   { font-size: 0.6rem; text-align: right; }
 
-/* ── HEADER ─────────────────────────────── */
-.hdr {
-  border-bottom: 1px solid var(--border);
-  padding: 3.5rem 0 2.5rem;
-  background: linear-gradient(180deg, rgba(230,57,70,0.04) 0%, transparent 100%);
-}
-.hdr-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  margin-bottom: 2rem;
-}
-.hdr-eye {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.65rem;
-  letter-spacing: 0.18em;
-  margin-bottom: 1.2rem;
-}
-.sep { color: var(--dim); }
-.hdr-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(3rem, 6vw, 5.5rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.025em;
-  margin-bottom: 1rem;
-}
-.hdr-title em {
-  font-style: italic;
-  font-weight: 700;
-  color: #e63946;
-}
-.hdr-sub { font-size: 0.7rem; letter-spacing: 0.06em; color: var(--muted); }
-
-
 /* ── TOOLBAR ────────────────────────────── */
 .toolbar {
   position: sticky;
@@ -380,6 +352,8 @@ body {
   flex-wrap: wrap;
 }
 .filters { display: flex; gap: 0.4rem; flex-wrap: wrap; flex: 1; }
+.toolbar-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+.year-chip.active { --chip-c: #52796f; }
 .chip {
   display: flex;
   align-items: center;
@@ -527,11 +501,18 @@ body {
   overflow: hidden;
   animation: rise 0.35s ease both;
   transition: background 0.2s;
+  position: relative;
+  cursor: pointer;
 }
 .card:hover { background: var(--surf2); }
 @keyframes rise {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: none; }
+}
+.card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
 }
 .card-stripe {
   height: 2px;
@@ -572,8 +553,10 @@ body {
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 .badge {
   font-size: 0.52rem;
@@ -601,15 +584,6 @@ body {
   background: rgba(82, 121, 111, 0.15);
   border-color: #52796f;
 }
-.link {
-  font-size: 0.63rem;
-  letter-spacing: 0.05em;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color 0.15s;
-  white-space: nowrap;
-}
-.link:hover { color: var(--text); }
 
 /* ── FOOTER ─────────────────────────────── */
 .foot {

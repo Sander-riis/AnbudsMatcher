@@ -4,30 +4,11 @@ import { RouterView, RouterLink } from 'vue-router'
 
 <template>
   <div class="shell">
-
-    <header class="hdr">
-      <div class="hdr-inner">
-        <div class="hdr-eye">
-          <span class="mono muted">RIKSREVISJONEN</span>
-          <span class="sep">·</span>
-          <span class="mono muted">{{ new Date().getFullYear() }}</span>
-        </div>
-        <h1 class="hdr-title">Rapport<em>oversikt</em></h1>
-        <p class="hdr-sub mono">Alle offentliggjorte undersøkelser sortert etter alvorlighetsgrad</p>
-
-        <nav class="hdr-tabs">
-          <RouterLink to="/" exact-active-class="active" class="tab mono">Rapporter</RouterLink>
-          <RouterLink to="/matcher" active-class="active" class="tab mono">Anbudsmatcher</RouterLink>
-        </nav>
-      </div>
-    </header>
-
     <RouterView />
 
     <footer class="foot">
       <span class="mono">Data hentet live fra riksrevisjonen.no</span>
     </footer>
-
   </div>
 </template>
 
@@ -59,45 +40,9 @@ body {
 .mono  { font-family: 'Space Mono', monospace; }
 .muted { color: var(--muted); }
 .small { font-size: 0.75em; }
+.sep   { color: var(--dim); }
 
-/* ── HEADER ─────────────────────────────── */
-.hdr {
-  border-bottom: 1px solid var(--border);
-  padding: 3.5rem 0 2.5rem;
-  background: linear-gradient(180deg, rgba(230,57,70,0.04) 0%, transparent 100%);
-}
-.hdr-inner {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  margin-bottom: 2rem;
-}
-.hdr-eye {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.65rem;
-  letter-spacing: 0.18em;
-  margin-bottom: 1.2rem;
-}
-.sep { color: var(--dim); }
-.hdr-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(3rem, 6vw, 5.5rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.025em;
-  margin-bottom: 1rem;
-}
-.hdr-title em {
-  font-style: italic;
-  font-weight: 700;
-  color: #e63946;
-}
-.hdr-sub { font-size: 0.7rem; letter-spacing: 0.06em; color: var(--muted); }
-
-/* ── TAB NAV ────────────────────────────── */
-.hdr-tabs { display: flex; gap: 0.25rem; margin-top: 1.5rem; }
+/* ── TAB NAV (shared) ───────────────────── */
 .tab {
   display: inline-flex; align-items: center;
   padding: 0.3rem 0.8rem;
@@ -119,9 +64,5 @@ body {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-}
-
-@media (max-width: 640px) {
-  .hdr-title { font-size: 2.6rem; }
 }
 </style>

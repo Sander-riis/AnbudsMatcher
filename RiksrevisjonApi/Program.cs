@@ -34,7 +34,14 @@ var svc = app.Services.GetRequiredService<ReportService>();
 _ = svc.LoadAsync();
 
 var doffinSvc = app.Services.GetRequiredService<DoffinService>();
-_ = doffinSvc.LoadAsync();
+// Wait for reports to load so entity terms are available for Doffin search
+_ = Task.Run(async () =>
+{
+    // Poll until reports are loaded (max ~60s)
+    for (int i = 0; i < 120 && svc.Reports.Count == 0; i++)
+        await Task.Delay(500);
+    await doffinSvc.LoadAsync();
+});
 
 var matchSvc = app.Services.GetRequiredService<MatchService>();
 _ = matchSvc.LoadAsync();
@@ -121,8 +128,7 @@ class ReportService(IHttpClientFactory factory)
     private static readonly TimeSpan CacheMaxAge = TimeSpan.FromHours(12);
     private static readonly JsonSerializerOptions JsonOpts = new() { WriteIndented = true };
 
-    private static readonly string[] SearchTerms =
-        ["IKT", "IT", "utvikling", "programvare", "skytjeneste", "digitalisering"];
+    private static readonly string[] SearchTerms = ["riksrevisjonen"];
 
     private List<Report> _reports = [];
     public bool IsLoading { get; private set; }
@@ -233,14 +239,14 @@ class ReportService(IHttpClientFactory factory)
         try
         {
             var encoded = Uri.EscapeDataString(term);
-            var html = await client.GetStringAsync($"/sok/?t=1&cat=10&q={encoded}&p={page}");
+            var html = await client.GetStringAsync($"/sok/?t=1&q={encoded}&p={page}");
             return ParseSearchPage(html);
         }
         catch { return []; }
     }
 
     /// <summary>
-    /// Parses the /sok/?t=1&amp;cat=10 search results page HTML.
+    /// Parses the /sok/?t=1 search results page HTML.
     /// Each result is an &lt;article&gt; containing rr-search-result-link, &lt;h3&gt;, &lt;time&gt;, and blockquote.
     /// </summary>
     internal static List<Report> ParseSearchPage(string html)
@@ -261,6 +267,9 @@ class ReportService(IHttpClientFactory factory)
         var summaryRx = new Regex(
             @"rr-search-result__excerpt[^>]*>\s*(.*?)\s*</p>",
             RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        var catRx = new Regex(
+            @"rr-search-result-meta[^>]*>\s*([^<]+?)\s*</div>",
+            RegexOptions.IgnoreCase);
 
         int id = 1;
         foreach (System.Text.RegularExpressions.Match m in articleRx.Matches(html))
@@ -279,10 +288,17 @@ class ReportService(IHttpClientFactory factory)
             var rawSummary = summaryRx.Match(block).Groups[1].Value.Trim();
             var summary = Decode(StripTags(rawSummary));
 
+            // Extract all category tags and join them
+            var cats = catRx.Matches(block)
+                .Select(c => Regex.Replace(Decode(c.Groups[1].Value.Trim().TrimEnd('·').Trim()), @"\s+", " "))
+                .Where(c => !string.IsNullOrEmpty(c))
+                .ToList();
+            var department = cats.Count > 0 ? string.Join(" / ", cats) : "";
+
             results.Add(new Report(
                 id++, title, summary, "Ingen karakter",
                 date == default ? "" : date.ToString("yyyy-MM-dd"),
-                "Digitalisering/ikt",
+                department,
                 "https://www.riksrevisjonen.no" + href));
         }
         return results;
@@ -367,7 +383,8 @@ record Notice(int Id, string Title, string Buyer, string PublishedDate,
               string Url, string Description);
 
 record Match(int ReportId, int NoticeId, double Score,
-             string[] MatchedKeywords, string? MatchedOrg, string[]? MatchedBigrams = null);
+             string[] MatchedKeywords, string? MatchedOrg, string[]? MatchedBigrams = null,
+             string[]? MatchedTitleWords = null);
 
 // ─── Cache + Doffin API records ───────────────────────────────────────────────
 
@@ -381,7 +398,7 @@ record DoffinBuyer(string Id, string Name);
 
 // ─── DoffinService ────────────────────────────────────────────────────────────
 
-class DoffinService(IHttpClientFactory factory)
+class DoffinService(IHttpClientFactory factory, ReportService reportSvc)
 {
     private static readonly string CacheFile = Path.Combine(
         AppContext.BaseDirectory, "notices-cache.json");
@@ -392,7 +409,7 @@ class DoffinService(IHttpClientFactory factory)
         ["IKT", "IT", "utvikling", "programvare", "skytjeneste", "digitalisering"];
 
     private static readonly string SearchVersion =
-        $"it-v1|{string.Join(",", SearchTerms)}|COMPETITION,PLANNING";
+        $"it-v2|{string.Join(",", SearchTerms)}|COMPETITION,PLANNING|entity";
 
     // Paths to the other two cache files — needed for atomic version-mismatch cleanup
     private static readonly string ReportsCacheFile = Path.Combine(
@@ -407,6 +424,22 @@ class DoffinService(IHttpClientFactory factory)
     private List<Notice> _notices = [];
     public bool IsLoading { get; private set; }
     public IReadOnlyList<Notice> Notices { get { lock (_notices) return _notices.ToList(); } }
+
+    /// Extract rare words (≥8 chars, no stopwords) from report titles —
+    /// used as additional Doffin search terms to find report-specific procurements.
+    internal static List<string> ExtractEntityTerms(IReadOnlyList<Report> reports)
+    {
+        var terms = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var r in reports)
+        {
+            if (string.IsNullOrWhiteSpace(r.Title)) continue;
+            var words = MatchService.TokenRegex
+                .Split(r.Title.ToLowerInvariant())
+                .Where(w => w.Length >= 8 && !MatchService.Stopwords.Contains(w));
+            foreach (var w in words) terms.Add(w);
+        }
+        return terms.ToList();
+    }
 
     public async Task LoadAsync(bool forceRefresh = false)
     {
@@ -543,7 +576,7 @@ class DoffinService(IHttpClientFactory factory)
         var apiClient = factory.CreateClient("doffin-api");
         var allNotices = new List<Notice>();
 
-        // Phase 1: Run one paginated scrape per search term — SEQUENTIALLY to avoid Doffin overload
+        // Phase 1a: Run one paginated scrape per generic search term
         foreach (var term in SearchTerms)
         {
             Console.WriteLine($"[doffin] Scraping term: {term}");
@@ -556,6 +589,24 @@ class DoffinService(IHttpClientFactory factory)
             catch (Exception ex)
             {
                 Console.WriteLine($"[doffin]   → ERROR for '{term}': {ex.Message}");
+            }
+        }
+
+        // Phase 1b: Extract entity terms from report titles and search those too
+        var entityTerms = ExtractEntityTerms(reportSvc.Reports);
+        Console.WriteLine($"[doffin] Entity terms from reports: [{string.Join(", ", entityTerms)}]");
+        foreach (var term in entityTerms)
+        {
+            Console.WriteLine($"[doffin] Scraping entity term: {term}");
+            try
+            {
+                var termNotices = await ScrapeTermAsync(apiClient, term);
+                Console.WriteLine($"[doffin]   → {termNotices.Count} notices for entity '{term}'");
+                allNotices.AddRange(termNotices);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[doffin]   → ERROR for entity '{term}': {ex.Message}");
             }
         }
         Console.WriteLine($"[doffin] Total before dedup: {allNotices.Count}");
@@ -749,28 +800,30 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
             var keywords = ExtractKeywords(report.Title + " " + report.Summary);
             if (keywords.Count == 0) continue;
 
-            var bigrams  = ExtractBigrams(report.Title);
-            var normDept = NormalizeDepartment(report.Department);
+            var bigrams    = ExtractBigrams(report.Title);
+            var titleWords = ExtractTitleWords(report.Title);
+            var normDept   = NormalizeDepartment(report.Department);
             DateOnly.TryParse(report.PublishedDate, out var reportDate);
 
             foreach (var notice in notices)
             {
                 var (keyScore, matchedKw) = ComputeKeywordScore(keywords, notice, idf);
                 var (orgScore, matchedOrg) = ComputeOrgScore(normDept, notice);
+                var (titleScore, matchedTw) = ComputeTitleWordScore(titleWords, notice);
 
-                // Gate: require org match when keyword signal is weak (avoids generic-word false positives)
-                if (orgScore == 0 && keyScore < 40) continue;
+                // Gate: require at least one signal — org, keyword, or title-word match
+                if (orgScore == 0 && keyScore < 40 && titleScore == 0) continue;
 
                 var (bigramScore, matchedBg) = ComputeBigramScore(bigrams, notice);
 
-                // Small bonus when notice is published after the report (procurement follows audit)
+                // Bonus when notice is published after the report (procurement follows audit)
                 double dateFactor = 1.0;
                 if (reportDate != default &&
                     DateOnly.TryParse(notice.PublishedDate, out var noticeDate) &&
                     noticeDate >= reportDate)
-                    dateFactor = 1.05;
+                    dateFactor = 1.15;
 
-                var combined = (keyScore * 0.5 + bigramScore * 0.2 + orgScore * 0.3) * dateFactor;
+                var combined = (keyScore * 0.40 + bigramScore * 0.15 + orgScore * 0.25 + titleScore * 0.20) * dateFactor;
 
                 if (combined > 35)
                     results.Add(new Match(
@@ -778,7 +831,8 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
                         Math.Round(combined, 1),
                         matchedKw.ToArray(),
                         matchedOrg,
-                        matchedBg.Count > 0 ? matchedBg.ToArray() : null));
+                        matchedBg.Count > 0 ? matchedBg.ToArray() : null,
+                        matchedTw.Count > 0 ? matchedTw.ToArray() : null));
             }
         }
 
@@ -909,7 +963,31 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
 
     // ── Keyword Extraction (REQ-03) ─────────────────────────────────────────
 
-    private static readonly HashSet<string> Stopwords =
+    /// Extract significant words (≥6 chars, no stopwords) from a report title
+    /// for title-to-title matching against notice titles.
+    internal static List<string> ExtractTitleWords(string? title)
+    {
+        if (string.IsNullOrWhiteSpace(title)) return [];
+        return TokenRegex
+            .Split(title.ToLowerInvariant())
+            .Where(w => w.Length >= 6 && !Stopwords.Contains(w))
+            .Distinct()
+            .ToList();
+    }
+
+    /// Score how many title words from the report appear verbatim in the notice title.
+    /// Title-to-title match is a strong signal — a single hit is valuable.
+    internal static (double score, List<string> matched) ComputeTitleWordScore(
+        List<string> titleWords, Notice notice)
+    {
+        if (titleWords.Count == 0) return (0.0, []);
+        var noticeTitleLower = notice.Title.ToLowerInvariant();
+        var matched = titleWords.Where(tw => noticeTitleLower.Contains(tw)).ToList();
+        if (matched.Count == 0) return (0.0, []);
+        return ((matched.Count / (double)titleWords.Count) * 100.0, matched);
+    }
+
+    internal static readonly HashSet<string> Stopwords =
         new(StringComparer.OrdinalIgnoreCase)
         {
             "og", "i", "på", "er", "til", "av", "som", "med", "at", "har", "de", "vi",
@@ -928,7 +1006,7 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc)
             "å", "dei", "me", "ho"
         };
 
-    private static readonly System.Text.RegularExpressions.Regex TokenRegex =
+    internal static readonly System.Text.RegularExpressions.Regex TokenRegex =
         new(@"[^a-zæøåA-ZÆØÅ]+",
             System.Text.RegularExpressions.RegexOptions.Compiled);
 
