@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Playwright;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,13 @@ builder.Services.AddHttpClient("rr", c =>
     c.BaseAddress = new Uri("https://www.riksrevisjonen.no");
     c.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (compatible; RRDashboard/1.0)");
     c.Timeout = TimeSpan.FromSeconds(30);
+}).AddStandardResilienceHandler(o =>
+{
+    o.Retry.MaxRetryAttempts = 3;
+    o.Retry.Delay = TimeSpan.FromSeconds(1);
+    o.AttemptTimeout.Timeout = TimeSpan.FromSeconds(15);
+    o.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(60);
+    o.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(90);
 });
 
 builder.Services.AddHttpClient("doffin-api", c =>
@@ -21,36 +29,66 @@ builder.Services.AddHttpClient("doffin-api", c =>
     c.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (compatible; RRDashboard/1.0)");
     c.DefaultRequestHeaders.Add("Accept", "application/json");
     c.Timeout = TimeSpan.FromSeconds(30);
+}).AddStandardResilienceHandler(o =>
+{
+    o.Retry.MaxRetryAttempts = 3;
+    o.Retry.Delay = TimeSpan.FromSeconds(1);
+    o.AttemptTimeout.Timeout = TimeSpan.FromSeconds(15);
+    o.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(60);
+    o.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(90);
 });
 
 builder.Services.AddSingleton<ReportService>();
 builder.Services.AddSingleton<DoffinService>();
 builder.Services.AddSingleton<MatchService>();
 
+var startedAt = DateTime.UtcNow;
 var app = builder.Build();
 app.UseCors();
 
+var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
 var svc = app.Services.GetRequiredService<ReportService>();
-_ = svc.LoadAsync();
-
 var doffinSvc = app.Services.GetRequiredService<DoffinService>();
-// Wait for reports to load so entity terms are available for Doffin search
+var matchSvc = app.Services.GetRequiredService<MatchService>();
+
 _ = Task.Run(async () =>
 {
-    // Poll until reports are loaded (max ~60s)
-    for (int i = 0; i < 120 && svc.Reports.Count == 0; i++)
-        await Task.Delay(500);
-    await doffinSvc.LoadAsync();
-});
+    // Reports and notices can load in parallel — no dependency
+    var reportTask = Task.Run(async () =>
+    {
+        try
+        {
+            await svc.LoadAsync();
+            logger.LogInformation("Reports loaded: {Count} items", svc.Reports.Count);
+        }
+        catch (Exception ex) { logger.LogCritical(ex, "ReportService startup failed"); }
+    });
 
-var matchSvc = app.Services.GetRequiredService<MatchService>();
-_ = matchSvc.LoadAsync();
+    var noticeTask = Task.Run(async () =>
+    {
+        try
+        {
+            await doffinSvc.LoadAsync();
+            logger.LogInformation("Notices loaded: {Count} items", doffinSvc.Notices.Count);
+        }
+        catch (Exception ex) { logger.LogCritical(ex, "DoffinService startup failed"); }
+    });
+
+    await Task.WhenAll(reportTask, noticeTask);
+
+    try
+    {
+        await matchSvc.LoadAsync();
+        logger.LogInformation("Matches loaded: {Count} items", matchSvc.Matches.Count);
+    }
+    catch (Exception ex) { logger.LogCritical(ex, "MatchService startup failed"); }
+});
 
 app.MapGet("/api/reports", (ReportService s) =>
     Results.Ok(new { loading = s.IsLoading, reports = s.Reports }));
 
 // Force a fresh scrape (ignores cache)
-app.MapPost("/api/reports/refresh", async (ReportService s) =>
+app.MapPost("/api/reports/refresh", (ReportService s) =>
 {
     _ = s.LoadAsync(forceRefresh: true);
     return Results.Accepted();
@@ -59,7 +97,7 @@ app.MapPost("/api/reports/refresh", async (ReportService s) =>
 app.MapGet("/api/notices", (DoffinService s) =>
     Results.Ok(new { loading = s.IsLoading, notices = s.Notices }));
 
-app.MapPost("/api/notices/refresh", async (DoffinService s) =>
+app.MapPost("/api/notices/refresh", (DoffinService s) =>
 {
     _ = s.LoadAsync(forceRefresh: true);
     return Results.Accepted();
@@ -398,18 +436,16 @@ record DoffinBuyer(string Id, string Name);
 
 // ─── DoffinService ────────────────────────────────────────────────────────────
 
-class DoffinService(IHttpClientFactory factory, ReportService reportSvc)
+class DoffinService(IHttpClientFactory factory)
 {
     private static readonly string CacheFile = Path.Combine(
         AppContext.BaseDirectory, "notices-cache.json");
     private static readonly TimeSpan CacheMaxAge = TimeSpan.FromHours(12);
     private static readonly JsonSerializerOptions JsonOpts = new() { WriteIndented = true };
 
-    private static readonly string[] SearchTerms =
-        ["IKT", "IT", "utvikling", "programvare", "skytjeneste", "digitalisering"];
+    private static readonly string[] SearchTerms = [""];  // empty = all notices
 
-    private static readonly string SearchVersion =
-        $"it-v2|{string.Join(",", SearchTerms)}|COMPETITION,PLANNING|entity";
+    private static readonly string SearchVersion = "all-tjenester-v1|COMPETITION,PLANNING|contractNature:SERVICES";
 
     // Paths to the other two cache files — needed for atomic version-mismatch cleanup
     private static readonly string ReportsCacheFile = Path.Combine(
@@ -427,18 +463,28 @@ class DoffinService(IHttpClientFactory factory, ReportService reportSvc)
 
     /// Extract rare words (≥8 chars, no stopwords) from report titles —
     /// used as additional Doffin search terms to find report-specific procurements.
+    /// Keeps only terms appearing in ≤2 report titles (truly distinctive), capped at 20.
     internal static List<string> ExtractEntityTerms(IReadOnlyList<Report> reports)
     {
-        var terms = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var termFreq = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         foreach (var r in reports)
         {
             if (string.IsNullOrWhiteSpace(r.Title)) continue;
             var words = MatchService.TokenRegex
                 .Split(r.Title.ToLowerInvariant())
-                .Where(w => w.Length >= 8 && !MatchService.Stopwords.Contains(w));
-            foreach (var w in words) terms.Add(w);
+                .Where(w => w.Length >= 8 && !MatchService.Stopwords.Contains(w))
+                .Distinct();
+            foreach (var w in words)
+                termFreq[w] = termFreq.GetValueOrDefault(w, 0) + 1;
         }
-        return terms.ToList();
+        // Keep only rare terms (appear in ≤2 reports) — most likely proper nouns / entities
+        return termFreq
+            .Where(kv => kv.Value <= 2)
+            .OrderBy(kv => kv.Value)
+            .ThenByDescending(kv => kv.Key.Length)
+            .Select(kv => kv.Key)
+            .Take(20)
+            .ToList();
     }
 
     public async Task LoadAsync(bool forceRefresh = false)
@@ -576,102 +622,58 @@ class DoffinService(IHttpClientFactory factory, ReportService reportSvc)
         var apiClient = factory.CreateClient("doffin-api");
         var allNotices = new List<Notice>();
 
-        // Phase 1a: Run one paginated scrape per generic search term
-        foreach (var term in SearchTerms)
+        // Fetch Tjenester notices year by year to work around the ~1000 result API cap
+        var years = Enumerable.Range(2022, DateTime.Now.Year - 2022 + 1);
+        foreach (var year in years)
         {
-            Console.WriteLine($"[doffin] Scraping term: {term}");
+            Console.WriteLine($"[doffin] Scraping Tjenester for {year}");
             try
             {
-                var termNotices = await ScrapeTermAsync(apiClient, term);
-                Console.WriteLine($"[doffin]   → {termNotices.Count} notices for '{term}'");
-                allNotices.AddRange(termNotices);
+                var yearNotices = await ScrapeYearAsync(apiClient, year);
+                Console.WriteLine($"[doffin]   → {yearNotices.Count} notices for {year}");
+                allNotices.AddRange(yearNotices);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[doffin]   → ERROR for '{term}': {ex.Message}");
-            }
-        }
-
-        // Phase 1b: Extract entity terms from report titles and search those too
-        var entityTerms = ExtractEntityTerms(reportSvc.Reports);
-        Console.WriteLine($"[doffin] Entity terms from reports: [{string.Join(", ", entityTerms)}]");
-        foreach (var term in entityTerms)
-        {
-            Console.WriteLine($"[doffin] Scraping entity term: {term}");
-            try
-            {
-                var termNotices = await ScrapeTermAsync(apiClient, term);
-                Console.WriteLine($"[doffin]   → {termNotices.Count} notices for entity '{term}'");
-                allNotices.AddRange(termNotices);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[doffin]   → ERROR for entity '{term}': {ex.Message}");
+                Console.WriteLine($"[doffin]   → ERROR for {year}: {ex.Message}");
             }
         }
         Console.WriteLine($"[doffin] Total before dedup: {allNotices.Count}");
 
-        // Phase 2: Deduplicate by URL — keep first occurrence, re-assign sequential IDs
+        // Deduplicate by URL — keep first occurrence, re-assign sequential IDs
         var deduped = DeduplicateNotices(allNotices);
-        Console.WriteLine($"[doffin] After dedup: {deduped.Count} unique notices");
 
-        // Phase 3: Post-filter — keep only Tjenester (service) contracts
-        // Fetch detail JSON from api.doffin.no for each notice; use SemaphoreSlim(5) for concurrency
-        var sem = new SemaphoreSlim(5);
-        var tjenesterList = new System.Collections.Concurrent.ConcurrentBag<Notice>();
-
-        var filterTasks = deduped.Select(async notice =>
-        {
-            await sem.WaitAsync();
-            try
-            {
-                var isTjenester = await FetchAndCheckTjenester(apiClient, notice.Url);
-                if (isTjenester) tjenesterList.Add(notice);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[doffin] Detail check failed for {notice.Url}: {ex.Message}");
-                // On error: exclude the notice (conservative — avoids non-IT notices slipping through)
-            }
-            finally { sem.Release(); }
-        });
-        await Task.WhenAll(filterTasks);
-
-        // Commit to _notices — sorted by original ID order
-        var sorted = tjenesterList.OrderBy(n => n.Id).ToList();
-
-        lock (_notices) { _notices.Clear(); _notices.AddRange(sorted); }
-        Console.WriteLine($"[doffin] Done — {_notices.Count} IT Tjenester notices loaded");
+        lock (_notices) { _notices.Clear(); _notices.AddRange(deduped); }
+        Console.WriteLine($"[doffin] Done — {_notices.Count} Tjenester notices loaded");
     }
 
-    private static readonly int MaxPagesPerTerm = 5;  // 5 × 20 = 100 notices per term max
+    private static readonly int MaxPagesPerTerm = 250;  // 250 × 100 = 25000 notices max
 
     /// <summary>
-    /// POSTs to search-api/search, increments page until hits is empty.
-    /// Maps each DoffinHit to a Notice with URL = https://www.doffin.no/notices/{id}.
+    /// Fetches all Tjenester notices for a given year. Paginates until 400 or empty.
     /// </summary>
-    private async Task<List<Notice>> ScrapeTermAsync(HttpClient apiClient, string term)
+    private async Task<List<Notice>> ScrapeYearAsync(HttpClient apiClient, int year)
     {
         var notices = new List<Notice>();
         int page = 1;
-        int globalId = 1;  // Temporary ID — will be re-assigned by DeduplicateNotices
+        int globalId = 1;
 
         while (true)
         {
             var requestBody = new
             {
-                numHitsPerPage = 20,
+                numHitsPerPage = 100,
                 page,
-                searchString = term,
+                searchString = "",
                 sortBy = "RELEVANCE",
                 facets = new
                 {
                     type           = new { checkedItems = new[] { "COMPETITION", "PLANNING" } },
-                    contractNature = new { checkedItems = Array.Empty<string>() },
+                    contractNature = new { checkedItems = new[] { "SERVICES" } },
                     cpvCodesLabel  = new { checkedItems = Array.Empty<string>() },
                     cpvCodesId     = new { checkedItems = Array.Empty<string>() },
                     status         = new { checkedItems = Array.Empty<string>() },
-                    publicationDate= new { from = "2022-01-01", to = (string?)null },
+                    publicationDate= new { from = $"{year}-01-01", to = $"{year}-12-31" },
                     location       = new { checkedItems = Array.Empty<string>() },
                     buyer          = new { checkedItems = Array.Empty<string>() },
                     winner         = new { checkedItems = Array.Empty<string>() }
@@ -681,12 +683,20 @@ class DoffinService(IHttpClientFactory factory, ReportService reportSvc)
             var body    = System.Text.Json.JsonSerializer.Serialize(requestBody);
             var content = new System.Net.Http.StringContent(body, System.Text.Encoding.UTF8, "application/json");
             var resp    = await apiClient.PostAsync("search-api/search", content);
-            resp.EnsureSuccessStatusCode();
+
+            // Doffin API returns 400 when page exceeds its internal limit (~10 pages)
+            if (!resp.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"[doffin]   page {page} returned {(int)resp.StatusCode} — stopping pagination");
+                break;
+            }
 
             var result = System.Text.Json.JsonSerializer.Deserialize<DoffinSearchResult>(
                 await resp.Content.ReadAsStringAsync(), DoffinApiOpts);
 
             if (result == null || result.Hits.Count == 0 || page > MaxPagesPerTerm) break;
+
+            Console.WriteLine($"[doffin]   page {page} — {result.Hits.Count} hits (total: {result.NumHitsTotal})");
 
             foreach (var hit in result.Hits)
             {
