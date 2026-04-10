@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 3
+current_phase: 05
 status: unknown
-last_updated: "2026-04-08T08:40:46.761Z"
+last_updated: "2026-04-10T08:59:15.367Z"
 progress:
-  total_phases: 4
-  completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_phases: 5
+  completed_phases: 4
+  total_plans: 16
+  completed_plans: 13
 ---
 
 # STATE — Riksrevisjonen × Doffin Matcher
@@ -17,7 +17,7 @@ progress:
 ## Current Status
 
 **Milestone:** 1 — Procurement Matching MVP  
-**Current Phase:** 3
+**Current Phase:** 05
 **Next Action:** `/gsd-plan-phase 1` — Doffin Scraper
 
 ---
@@ -58,6 +58,12 @@ progress:
 - What Playwright install method works on this Windows machine? (`playwright install chromium` or bundled)
 - Should Doffin search terms be hardcoded (`helfo`) or configurable via API?
 - Match threshold of 15 — validate with real data in Phase 2.
+
+---
+
+## Roadmap Evolution
+
+- Phase 5 added: IT-only filter for reports and notices
 
 ---
 *Updated: 2026-04-07 after project initialization*
