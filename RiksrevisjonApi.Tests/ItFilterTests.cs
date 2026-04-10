@@ -9,25 +9,35 @@ namespace RiksrevisjonApi.Tests;
 /// </summary>
 public class ItFilterTests
 {
-    // Minimal sample HTML matching the rr-link-wrapper structure verified in RESEARCH.md.
-    // Uses the same regex targets as ParseListPage: rr-link-wrapper, blockquote, <time>, <h2>, rr-search-result-meta.
-    private const string SampleListPageHtml = """
-        <a class="rr-link-wrapper" href="/rapporter-mappe/2025/riksrevisjonens-kontroll-med-it-systemer/">
-          <div class="rr-search-result-meta">Digitalisering/ikt</div>
-          <h2 class="rr-heading">Riksrevisjonens kontroll med IT-systemer</h2>
-          <blockquote><p>Undersøkelse av digitalisering i offentlig sektor.</p></blockquote>
-          <time datetime="2025-03-15">15.03.2025</time>
-        </a>
+    // Minimal sample HTML matching the rr-search-result-link structure from /sok/?t=1&cat=10.
+    private const string SampleSearchPageHtml = """
+        <article>
+          <header>
+            <div class="rr-search-result-info">
+              <span class="rr-search-result-info__tag rr-font--heavy">Rapport</span>
+              <span class="rr-search-result-info__tag">
+                Publisert
+                <time datetime="15.03.2025 09:00:00">15.03.2025</time>
+              </span>
+            </div>
+            <a class="rr-search-result-link" href="/rapporter-mappe/2025/riksrevisjonens-kontroll-med-it-systemer/">
+              <h3 class="rr-heading-3 rr-font--neutral">Riksrevisjonens kontroll med IT-systemer</h3>
+            </a>
+          </header>
+          <blockquote>
+            <p class="rr-search-result__excerpt">Undersøkelse av digitalisering i offentlig sektor.</p>
+          </blockquote>
+        </article>
         """;
 
     [Fact]
     public void ParseListPage_ItCategory_ReturnsNonEmptyList()
     {
-        // IT-01: The existing ParseListPage regex works unchanged against the IT-category URL HTML.
-        var results = ReportService.ParseListPage(SampleListPageHtml, page: 1);
+        // IT-01: ParseSearchPage correctly parses /sok/?t=1&cat=10 search results HTML.
+        var results = ReportService.ParseSearchPage(SampleSearchPageHtml);
 
         Assert.NotEmpty(results);
-        Assert.Equal(1, results.Count);
+        Assert.Single(results);
         Assert.Equal("Riksrevisjonens kontroll med IT-systemer", results[0].Title);
         Assert.Contains("riksrevisjonen.no/rapporter-mappe/", results[0].Url);
     }

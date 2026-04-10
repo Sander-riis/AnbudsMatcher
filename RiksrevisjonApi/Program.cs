@@ -84,6 +84,9 @@ class ReportService(IHttpClientFactory factory)
     private static readonly TimeSpan CacheMaxAge = TimeSpan.FromHours(12);
     private static readonly JsonSerializerOptions JsonOpts = new() { WriteIndented = true };
 
+    private static readonly string[] SearchTerms =
+        ["IKT", "IT", "utvikling", "programvare", "skytjeneste", "digitalisering"];
+
     private List<Report> _reports = [];
     public bool IsLoading { get; private set; }
     public IReadOnlyList<Report> Reports { get { lock (_reports) return _reports.ToList(); } }
@@ -141,54 +144,112 @@ class ReportService(IHttpClientFactory factory)
         lock (_reports) _reports.Clear();
 
         var client = factory.CreateClient("rr");
+        var allReports = new List<Report>();
 
-        // Probe pages sequentially until empty
-        int page = 1;
-        var knownPages = new List<int>();
-        while (true)
+        // Scrape one paginated search per term — sequentially
+        foreach (var term in SearchTerms)
         {
-            var probe = await FetchListPage(client, page);
-            if (probe.Count == 0) break;
-            knownPages.Add(page);
-            page++;
+            Console.WriteLine($"[scrape] Scraping term: {term}");
+            int page = 1;
+            while (true)
+            {
+                var batch = await FetchSearchPage(client, term, page);
+                if (batch.Count == 0) break;
+                allReports.AddRange(batch);
+                page++;
+            }
+            Console.WriteLine($"[scrape]   → done for '{term}'");
         }
-        Console.WriteLine($"[scrape] Found {knownPages.Count} pages");
+        Console.WriteLine($"[scrape] Total before dedup: {allReports.Count}");
 
-        // Re-fetch all confirmed pages in parallel
-        var pageTasks = knownPages.Select(p => FetchListPage(client, p));
-        var pages = await Task.WhenAll(pageTasks);
-        var items = pages.SelectMany(x => x).ToList();
-        Console.WriteLine($"[scrape] Enriching {items.Count} reports...");
+        // Deduplicate by URL, re-assign sequential IDs
+        var deduped = allReports
+            .Where(r => !string.IsNullOrEmpty(r.Url))
+            .GroupBy(r => r.Url)
+            .Select(g => g.First())
+            .Select((r, i) => r with { Id = i + 1 })
+            .ToList();
+        Console.WriteLine($"[scrape] After dedup: {deduped.Count} unique reports");
 
-        // Enrich with severity in parallel, streaming as they arrive
+        // Enrich with severity in parallel
+        Console.WriteLine($"[scrape] Enriching {deduped.Count} reports...");
         var sem = new SemaphoreSlim(8);
-        var enrichTasks = items.Select(async item =>
+        var enrichTasks = deduped.Select(async item =>
         {
             await sem.WaitAsync();
-            try
-            {
-                var enriched = await Enrich(client, item);
-                lock (_reports) _reports.Add(enriched);
-                return enriched;
-            }
-            catch { lock (_reports) _reports.Add(item); return item; }
+            try { return await Enrich(client, item); }
+            catch { return item; }
             finally { sem.Release(); }
         });
+        var enriched = await Task.WhenAll(enrichTasks);
 
-        await Task.WhenAll(enrichTasks);
-        lock (_reports) _reports.RemoveAll(r =>
-            !DateOnly.TryParse(r.PublishedDate, out var d) || d.Year < 2025);
+        lock (_reports)
+        {
+            _reports.Clear();
+            _reports.AddRange(enriched.Where(r =>
+                DateOnly.TryParse(r.PublishedDate, out var d) && d.Year >= 2025));
+        }
         Console.WriteLine($"[scrape] Done — {_reports.Count} reports loaded (2025+)");
     }
 
-    static async Task<List<Report>> FetchListPage(HttpClient client, int page)
+    static async Task<List<Report>> FetchSearchPage(HttpClient client, string term, int page)
     {
         try
         {
-            var html = await client.GetStringAsync($"/rapporter/?q=Digitalisering/ikt&p={page}");
-            return ParseListPage(html, page);
+            var encoded = Uri.EscapeDataString(term);
+            var html = await client.GetStringAsync($"/sok/?t=1&cat=10&q={encoded}&p={page}");
+            return ParseSearchPage(html);
         }
         catch { return []; }
+    }
+
+    /// <summary>
+    /// Parses the /sok/?t=1&amp;cat=10 search results page HTML.
+    /// Each result is an &lt;article&gt; containing rr-search-result-link, &lt;h3&gt;, &lt;time&gt;, and blockquote.
+    /// </summary>
+    internal static List<Report> ParseSearchPage(string html)
+    {
+        var results = new List<Report>();
+        var articleRx = new Regex(
+            @"<article[^>]*>(.*?)</article>",
+            RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        var linkRx = new Regex(
+            @"<a\s+class=""rr-search-result-link""\s+href=""(/rapporter-mappe/[^""]+)""",
+            RegexOptions.IgnoreCase);
+        var titleRx = new Regex(
+            @"<h3[^>]*>\s*([^<]+?)\s*</h3>",
+            RegexOptions.IgnoreCase);
+        var dateRx = new Regex(
+            @"datetime=""(\d{2}\.\d{2}\.\d{4})",
+            RegexOptions.IgnoreCase);
+        var summaryRx = new Regex(
+            @"rr-search-result__excerpt[^>]*>\s*(.*?)\s*</p>",
+            RegexOptions.Singleline | RegexOptions.IgnoreCase);
+
+        int id = 1;
+        foreach (System.Text.RegularExpressions.Match m in articleRx.Matches(html))
+        {
+            var block = m.Groups[1].Value;
+
+            var href = linkRx.Match(block).Groups[1].Value.Trim();
+            if (string.IsNullOrEmpty(href)) continue;
+
+            var title = Decode(titleRx.Match(block).Groups[1].Value.Trim());
+            if (string.IsNullOrWhiteSpace(title)) continue;
+
+            var rawDate = dateRx.Match(block).Groups[1].Value.Trim();
+            DateOnly.TryParseExact(rawDate, "dd.MM.yyyy", out var date);
+
+            var rawSummary = summaryRx.Match(block).Groups[1].Value.Trim();
+            var summary = Decode(StripTags(rawSummary));
+
+            results.Add(new Report(
+                id++, title, summary, "Ingen karakter",
+                date == default ? "" : date.ToString("yyyy-MM-dd"),
+                "Digitalisering/ikt",
+                "https://www.riksrevisjonen.no" + href));
+        }
+        return results;
     }
 
     internal static List<Report> ParseListPage(string html, int page)
