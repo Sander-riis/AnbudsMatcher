@@ -482,8 +482,8 @@ function fmtDate(d) {
   border-radius: 1px;
   flex-shrink: 0;
 }
-.sev-label { font-size: 0.65rem; letter-spacing: 0.14em; color: var(--c); }
-.sev-count { font-size: 0.6rem; color: var(--dim); margin-left: auto; }
+.sev-label { font-size: 0.65rem; letter-spacing: 0.14em; color: var(--text); }
+.sev-count { font-size: 0.6rem; color: var(--muted); margin-left: auto; }
 
 /* ── GRID ───────────────────────────────── */
 .grid {
@@ -530,7 +530,7 @@ function fmtDate(d) {
   margin-bottom: 0.7rem;
 }
 .dept { font-size: 0.6rem; letter-spacing: 0.05em; color: var(--muted); flex: 1; line-height: 1.4; }
-.date { font-size: 0.58rem; color: var(--dim); white-space: nowrap; flex-shrink: 0; }
+.date { font-size: 0.58rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
 
 .card-title {
   font-family: 'Playfair Display', Georgia, serif;
