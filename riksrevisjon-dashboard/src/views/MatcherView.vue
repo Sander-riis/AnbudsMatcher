@@ -10,6 +10,7 @@ const loading    = ref(true)
 const error      = ref(null)
 const refreshing = ref(false)
 const expandedIds = ref(new Set())
+const searchQuery = ref('')
 
 // ── Router / URL filter ───────────────────────────────────────────────────
 const route  = useRoute()
@@ -112,10 +113,23 @@ const matchedReports = computed(() => {
     return b.matches.length - a.matches.length
   })
 
+  let out = sorted
   if (filterReportId.value !== null) {
-    return sorted.filter(item => item.report.id === filterReportId.value)
+    out = sorted.filter(item => item.report.id === filterReportId.value)
   }
-  return sorted
+
+  const q = searchQuery.value.trim().toLowerCase()
+  if (q) {
+    out = out.filter(item => {
+      if (item.report.title.toLowerCase().includes(q)) return true
+      if (item.report.department?.toLowerCase().includes(q)) return true
+      return item.matches.some(m => {
+        const n = noticeMap.value.get(m.noticeId)
+        return n && (n.title.toLowerCase().includes(q) || n.buyer.toLowerCase().includes(q))
+      })
+    })
+  }
+  return out
 })
 
 // ── Expand / collapse ─────────────────────────────────────────────────────
@@ -136,6 +150,19 @@ function scoreColor(score) {
   if (score >= 30) return '#f4a261'   // amber
   return '#e63946'                    // red
 }
+
+const stats = computed(() => {
+  const m = matches.value
+  if (!m.length) return null
+  const scores = m.map(x => x.score)
+  const uniqueReports = new Set(m.map(x => x.reportId)).size
+  return {
+    total: m.length,
+    uniqueReports,
+    avgScore: (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1),
+    topScore: Math.max(...scores),
+  }
+})
 
 function fmtDate(d) {
   if (!d) return ''
@@ -175,6 +202,12 @@ async function refreshData() {
 
     <!-- Toolbar -->
     <div class="matcher-toolbar">
+      <input
+        v-model="searchQuery"
+        type="text"
+        class="matcher-search mono"
+        placeholder="Søk i rapporter, kunngjøringer, kjøpere..."
+      />
       <button
         class="chip"
         :disabled="refreshing || loading"
@@ -183,6 +216,17 @@ async function refreshData() {
         <span v-if="refreshing" class="refresh-spinner"></span>
         <span>{{ refreshing ? 'Oppdaterer...' : 'Oppdater data' }}</span>
       </button>
+    </div>
+
+    <!-- Stats bar -->
+    <div v-if="stats && !loading" class="stats-bar mono">
+      <span class="stat"><strong>{{ stats.total }}</strong> treff</span>
+      <span class="stat-sep">·</span>
+      <span class="stat"><strong>{{ stats.uniqueReports }}</strong> rapporter</span>
+      <span class="stat-sep">·</span>
+      <span class="stat">snitt <strong>{{ stats.avgScore }}</strong></span>
+      <span class="stat-sep">·</span>
+      <span class="stat">topp <strong>{{ stats.topScore }}</strong></span>
     </div>
 
     <!-- Active filter banner -->
@@ -240,6 +284,8 @@ async function refreshData() {
             ></span>
 
             <span class="row-title">{{ report.title }}</span>
+
+            <span v-if="report.department" class="dept-label mono">{{ report.department.replace(/ · \/ /g, ' · ') }}</span>
 
             <a
               v-if="report.url"
@@ -306,6 +352,10 @@ async function refreshData() {
 
               <div v-if="m.matchedOrg" class="notice-org mono muted">
                 Org: {{ m.matchedOrg }}
+              </div>
+
+              <div v-if="noticeMap.get(m.noticeId)?.description" class="notice-desc mono muted">
+                {{ noticeMap.get(m.noticeId).description.substring(0, 200) }}{{ noticeMap.get(m.noticeId).description.length > 200 ? '...' : '' }}
               </div>
 
               <div v-if="m.matchedKeywords?.length" class="keyword-tags">
@@ -536,6 +586,22 @@ async function refreshData() {
   margin-top: 0.3rem;
 }
 
+.notice-desc {
+  font-size: 0.62rem;
+  line-height: 1.5;
+  margin-top: 0.3rem;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+.dept-label {
+  font-size: 0.52rem;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .keyword-tags {
   display: flex;
   flex-wrap: wrap;
@@ -594,8 +660,39 @@ async function refreshData() {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
+.matcher-search {
+  flex: 1;
+  padding: 0.4rem 0.8rem;
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.matcher-search::placeholder { color: var(--dim); }
+.matcher-search:focus { border-color: var(--muted); }
+
+/* ── Stats bar ─────────────────────────────────────────────────────────── */
+.stats-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.stats-bar strong { color: var(--text); }
+.stat-sep { color: var(--dim); }
 .chip {
   display: inline-flex;
   align-items: center;
