@@ -31,8 +31,8 @@ public class KeywordExtractionTests
     [Fact]
     public void ExtractKeywords_PreservesNorwegianCharacters()
     {
-        var result = MatchService.ExtractKeywords("Riksrevisjonens anskaffelse");
-        Assert.Contains("anskaffelse", result);
+        var result = MatchService.ExtractKeywords("Riksrevisjonens spesialisthelsetjenester");
+        Assert.Contains("spesialisthelsetjenester", result);
         Assert.DoesNotContain("riksrevisjonens", result);  // in Stopwords list
     }
 

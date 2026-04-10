@@ -110,11 +110,11 @@ public class ScoringTests
     }
 
     [Fact]
-    public void Threshold_FiltersScoresAtOrBelow35()
+    public void Threshold_FiltersScoresAtOrBelow40()
     {
-        // Score must be STRICTLY greater than 35 (not >=)
-        Assert.True(35.1 > 35);
-        Assert.False(35.0 > 35);
-        Assert.False(34.9 > 35);
+        // Score must be STRICTLY greater than 40 (not >=)
+        Assert.True(40.1 > 40);
+        Assert.False(40.0 > 40);
+        Assert.False(39.9 > 40);
     }
 }

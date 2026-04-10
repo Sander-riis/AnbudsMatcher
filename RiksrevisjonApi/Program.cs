@@ -848,6 +848,18 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
         var results = new List<Match>();
         var idf = ComputeIDF(notices);
 
+        // Pre-compute per-notice data once (avoids re-tokenising 254× per notice)
+        var noticeTokenCache = new Dictionary<int, HashSet<string>>(notices.Count);
+        var noticeTextCache = new Dictionary<int, string>(notices.Count);
+        foreach (var n in notices)
+        {
+            var text = (n.Title + " " + n.Description).ToLowerInvariant();
+            noticeTextCache[n.Id] = text;
+            noticeTokenCache[n.Id] = new HashSet<string>(
+                TokenRegex.Split(text).Where(w => w.Length >= 3).Select(Stem),
+                StringComparer.OrdinalIgnoreCase);
+        }
+
         foreach (var report in reports)
         {
             var keywords = ExtractKeywords(report.Title + " " + report.Summary);
@@ -860,14 +872,17 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
 
             foreach (var notice in notices)
             {
-                var (keyScore, matchedKw) = ComputeKeywordScore(keywords, notice, idf);
+                var tokens = noticeTokenCache[notice.Id];
+                var text   = noticeTextCache[notice.Id];
+
+                var (keyScore, matchedKw) = ComputeKeywordScoreFast(keywords, tokens, idf);
                 var (orgScore, matchedOrg) = ComputeOrgScore(normDept, notice);
-                var (titleScore, matchedTw) = ComputeTitleWordScore(titleWords, notice);
+                var (titleScore, matchedTw) = ComputeTitleWordScoreFast(titleWords, text);
 
                 // Gate: require at least one signal — org, keyword, or title-word match
                 if (orgScore == 0 && keyScore < 40 && titleScore == 0) continue;
 
-                var (bigramScore, matchedBg) = ComputeBigramScore(bigrams, notice);
+                var (bigramScore, matchedBg) = ComputeBigramScoreFast(bigrams, text);
 
                 // Bonus when notice is published after the report (procurement follows audit)
                 double dateFactor = 1.0;
@@ -878,7 +893,7 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
 
                 var combined = (keyScore * 0.40 + bigramScore * 0.15 + orgScore * 0.25 + titleScore * 0.20) * dateFactor;
 
-                if (combined > 35)
+                if (combined > 40)
                     results.Add(new Match(
                         report.Id, notice.Id,
                         Math.Round(combined, 1),
@@ -890,6 +905,39 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
         }
 
         return results;
+    }
+
+    /// Fast keyword scoring using pre-computed token set.
+    internal static (double score, List<string> matched) ComputeKeywordScoreFast(
+        List<string> keywords, HashSet<string> stemmedTokens, Dictionary<string, double>? idf)
+    {
+        if (keywords.Count == 0) return (0.0, []);
+        var matched = keywords.Where(kw => stemmedTokens.Contains(Stem(kw))).ToList();
+        if (matched.Count < 3) return (0.0, matched);
+        var idfMap = idf ?? new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+        double totalWeight   = keywords.Sum(kw => idfMap.GetValueOrDefault(Stem(kw), 1.0));
+        double matchedWeight = matched.Sum(kw => idfMap.GetValueOrDefault(Stem(kw), 1.0));
+        double score = totalWeight > 0 ? (matchedWeight / totalWeight) * 100.0 : 0.0;
+        return (score, matched);
+    }
+
+    /// Fast bigram scoring using pre-computed lowered text.
+    internal static (double score, List<string> matched) ComputeBigramScoreFast(
+        List<string> bigrams, string noticeTextLower)
+    {
+        if (bigrams.Count == 0) return (0.0, []);
+        var matched = bigrams.Where(bg => noticeTextLower.Contains(bg)).ToList();
+        return ((matched.Count / (double)bigrams.Count) * 100.0, matched);
+    }
+
+    /// Fast title-word scoring using pre-computed lowered text.
+    internal static (double score, List<string> matched) ComputeTitleWordScoreFast(
+        List<string> titleWords, string noticeTextLower)
+    {
+        if (titleWords.Count == 0) return (0.0, []);
+        var matched = titleWords.Where(tw => noticeTextLower.Contains(tw)).ToList();
+        if (matched.Count == 0) return (0.0, []);
+        return ((matched.Count / (double)titleWords.Count) * 100.0, matched);
     }
 
     /// Compute inverse document frequency over the notices corpus.
@@ -1034,8 +1082,8 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
         List<string> titleWords, Notice notice)
     {
         if (titleWords.Count == 0) return (0.0, []);
-        var noticeTitleLower = notice.Title.ToLowerInvariant();
-        var matched = titleWords.Where(tw => noticeTitleLower.Contains(tw)).ToList();
+        var noticeText = (notice.Title + " " + notice.Description).ToLowerInvariant();
+        var matched = titleWords.Where(tw => noticeText.Contains(tw)).ToList();
         if (matched.Count == 0) return (0.0, []);
         return ((matched.Count / (double)titleWords.Count) * 100.0, matched);
     }
@@ -1056,7 +1104,15 @@ class MatchService(ReportService reportSvc, DoffinService doffinSvc, ILogger<Mat
             "dog", "likevel", "imidlertid", "dermed", "altså", "dessuten",
             "riksrevisjonens", "riksrevisjonen", "rapport", "undersøkelse",
             "dokument", "bilag", "stortinget", "norsk", "norske", "norge",
-            "å", "dei", "me", "ho"
+            "å", "dei", "me", "ho",
+            // Domain stopwords — too generic in government/procurement context
+            "kontroll", "anbefalinger", "anbefaler", "opp", "bruk", "krav",
+            "drift", "del", "sør", "øst", "vest", "nord", "vurdering",
+            "følger", "statlig", "etablerer", "statens", "departementet",
+            "offentlig", "offentlige", "tjenester", "tjeneste", "avtale",
+            "rammeavtale", "anskaffelse", "anskaffelser", "tiltak",
+            "resultat", "resultater", "mål", "plan", "planer",
+            "forvaltning", "forvaltningen", "undersøkelsen", "slik"
         };
 
     internal static readonly System.Text.RegularExpressions.Regex TokenRegex =

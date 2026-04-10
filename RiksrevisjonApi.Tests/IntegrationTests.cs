@@ -31,8 +31,8 @@ public class IntegrationTests
     public void ComputeMatches_ReturnsOnlyScoresAboveThreshold()
     {
         var matches = MatchService.ComputeMatches(TestReports, TestNotices);
-        Assert.All(matches, m => Assert.True(m.Score > 35,
-            $"Match score {m.Score} is not > 35 (reportId={m.ReportId}, noticeId={m.NoticeId})"));
+        Assert.All(matches, m => Assert.True(m.Score > 40,
+            $"Match score {m.Score} is not > 40 (reportId={m.ReportId}, noticeId={m.NoticeId})"));
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class IntegrationTests
         var m = matches[0];
         Assert.Equal(10, m.ReportId);
         Assert.Equal(200, m.NoticeId);
-        Assert.True(m.Score > 35, $"Expected score > 35, got {m.Score}");
+        Assert.True(m.Score > 40, $"Expected score > 40, got {m.Score}");
         Assert.NotNull(m.MatchedTitleWords);
         Assert.Contains("helseplattformen", m.MatchedTitleWords!);
     }
