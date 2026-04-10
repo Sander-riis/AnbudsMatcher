@@ -86,3 +86,15 @@ Plans:
 | 2. Matching Engine | 0/4 | Not started | - |
 | 3. Matcher UI | 0/4 | Not started | - |
 | 4. Dashboard Integration | 0/2 | Not started | - |
+
+### Phase 5: IT-only filter for reports and notices
+
+**Goal:** Replace broad scraping with IT-only filtering at the backend scrape layer. Riksrevisjonen reports filtered via `q=Digitalisering/ikt`; Doffin notices fetched via 6 IT search terms, deduplicated, and post-filtered to Tjenester contracts only. Non-IT data never stored in cache.
+**Requirements**: D-01, D-03, D-04, D-05, D-06, D-07
+**Depends on:** Phase 4
+**Plans:** 3 plans
+
+Plans:
+- [ ] 05-00-PLAN.md — Wave 0: Create three failing test stub files (IT-01 through IT-06) in the test project
+- [ ] 05-01-PLAN.md — Wave 1: Add CacheEnvelope/DTOs, doffin-api HttpClient, fix report URL, add IsServiceContract + DeduplicateNotices + versioned cache helpers; fill IT-01/IT-03/IT-04 stubs GREEN
+- [ ] 05-02-PLAN.md — Wave 2: Rewrite DoffinService ScrapeAsync with 6-term REST API loop + Tjenester post-filter + version-aware LoadAsync; fill IT-02/IT-05/IT-06 stubs GREEN
