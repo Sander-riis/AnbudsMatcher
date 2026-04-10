@@ -186,10 +186,9 @@ class ReportService(IHttpClientFactory factory)
         lock (_reports)
         {
             _reports.Clear();
-            _reports.AddRange(enriched.Where(r =>
-                DateOnly.TryParse(r.PublishedDate, out var d) && d.Year >= 2025));
+            _reports.AddRange(enriched);
         }
-        Console.WriteLine($"[scrape] Done — {_reports.Count} reports loaded (2025+)");
+        Console.WriteLine($"[scrape] Done — {_reports.Count} reports loaded");
     }
 
     static async Task<List<Report>> FetchSearchPage(HttpClient client, string term, int page)
