@@ -175,20 +175,23 @@ async function refreshData() {
 </script>
 
 <template>
-  <div class="matcher-body" id="main-content">
-
+  <div>
     <!-- Page nav -->
     <div class="matcher-topnav">
-      <div class="matcher-brand">
-        <span class="mono muted">RIKSREVISJONEN</span>
-        <span class="sep">·</span>
-        <span class="page-title-sm">Anbud<em>matcher</em></span>
+      <div class="matcher-topnav-inner">
+        <div class="matcher-brand">
+          <span class="mono muted">RIKSREVISJONEN</span>
+          <span class="sep">·</span>
+          <span class="page-title-sm">Anbud<em>matcher</em></span>
+        </div>
+        <nav class="matcher-tabs" aria-label="Hovednavigasjon">
+          <RouterLink to="/" exact-active-class="active" class="tab mono">Rapporter</RouterLink>
+          <RouterLink to="/matcher" active-class="active" class="tab mono">Anbudsmatcher</RouterLink>
+        </nav>
       </div>
-      <nav class="matcher-tabs" aria-label="Hovednavigasjon">
-        <RouterLink to="/" exact-active-class="active" class="tab mono">Rapporter</RouterLink>
-        <RouterLink to="/matcher" active-class="active" class="tab mono">Anbudsmatcher</RouterLink>
-      </nav>
     </div>
+
+    <div class="matcher-body" id="main-content">
 
     <!-- Toolbar -->
     <div class="matcher-toolbar" role="search">
@@ -375,6 +378,7 @@ async function refreshData() {
       </div>
     </template>
 
+    </div>
   </div>
 </template>
 
@@ -622,15 +626,19 @@ async function refreshData() {
 
 /* ── Matcher topnav ────────────────────────────────────────────────────── */
 .matcher-topnav {
+  background: var(--surf);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 0;
+}
+.matcher-topnav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
   flex-wrap: wrap;
-  background: var(--surf);
-  border-bottom: 1px solid var(--border);
-  padding: 1.25rem 2rem;
-  margin: -3rem -2rem 2.5rem;
 }
 .matcher-brand {
   display: flex;
