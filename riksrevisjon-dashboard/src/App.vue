@@ -20,27 +20,32 @@ function login() {
 
 <template>
   <!-- Password gate -->
-  <div v-if="!authenticated" class="gate">
+  <div v-if="!authenticated" class="gate" role="main" aria-label="Innlogging">
     <div class="gate-box">
       <h1 class="gate-title">AnbudsMatcher</h1>
-      <p class="gate-sub mono">Skriv inn passord for å fortsette</p>
+      <p class="gate-sub mono" id="gate-desc">Skriv inn passord for å fortsette</p>
       <form @submit.prevent="login" class="gate-form">
+        <label for="gate-pw" class="sr-only">Passord</label>
         <input
+          id="gate-pw"
           v-model="input"
           type="password"
           placeholder="Passord"
           class="gate-input mono"
           :class="{ shake: error }"
+          aria-describedby="gate-desc"
+          :aria-invalid="error ? 'true' : undefined"
           autofocus
         />
         <button type="submit" class="gate-btn mono">Logg inn</button>
       </form>
-      <p v-if="error" class="gate-error mono">Feil passord</p>
+      <p v-if="error" class="gate-error mono" role="alert">Feil passord</p>
     </div>
   </div>
 
   <!-- App -->
   <div v-else class="shell">
+    <a href="#main-content" class="skip-link">Hopp til hovedinnhold</a>
     <RouterView />
 
     <footer class="foot">
@@ -60,8 +65,9 @@ function login() {
   --surf2:   #f0ede9;
   --border:  #ddd9d4;
   --text:    #1a1815;
-  --muted:   #6b6560;
-  --dim:     #a09b95;
+  --muted:   #555049;  /* WCAG AA 4.5:1 on --bg and --surf */
+  --dim:     #767067;  /* WCAG AA 4.5:1 on --bg */
+  --focus:   #2563eb;  /* visible focus ring */
 }
 
 html { scroll-behavior: smooth; }
@@ -74,17 +80,45 @@ body {
   min-height: 100vh;
 }
 
+/* WCAG: visible focus indicator for all interactive elements */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--text);
+  color: var(--bg);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 0;
+}
+
 .mono  { font-family: 'Space Mono', monospace; }
 .muted { color: var(--muted); }
 .small { font-size: 0.75em; }
 .sep   { color: var(--dim); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
 
 /* ── TAB NAV (shared) ───────────────────── */
 .tab {
   display: inline-flex; align-items: center;
   padding: 0.3rem 0.8rem;
   background: transparent; border: 1px solid var(--border); border-radius: 2px;
-  color: var(--muted); font-size: 0.6rem; letter-spacing: 0.08em;
+  color: var(--muted); font-size: 0.75rem; letter-spacing: 0.08em;
   text-decoration: none; transition: all 0.15s ease;
 }
 .tab:hover { border-color: var(--muted); color: var(--text); }
@@ -109,15 +143,15 @@ body {
   text-align: center; outline: none;
   transition: border-color 0.15s;
 }
-.gate-input:focus { border-color: var(--text); }
+.gate-input:focus { border-color: var(--text); outline: 2px solid var(--focus); outline-offset: 1px; }
 .gate-btn {
-  padding: 0.55rem; font-size: 0.65rem; letter-spacing: 0.1em;
+  padding: 0.55rem; font-size: 0.75rem; letter-spacing: 0.1em;
   border: 1px solid var(--text); border-radius: 2px;
   background: var(--text); color: var(--bg);
   cursor: pointer; transition: opacity 0.15s;
 }
 .gate-btn:hover { opacity: 0.85; }
-.gate-error { color: #c44; font-size: 0.7rem; margin-top: 0.5rem; }
+.gate-error { color: #c44; font-size: 0.8rem; margin-top: 0.5rem; }
 .shake { animation: shake 0.3s ease; }
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
@@ -130,7 +164,7 @@ body {
   border-top: 1px solid var(--border);
   padding: 1.75rem 2rem;
   text-align: center;
-  font-size: 0.63rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   color: var(--dim);
   display: flex;

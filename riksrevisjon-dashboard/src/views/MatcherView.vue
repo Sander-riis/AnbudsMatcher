@@ -175,7 +175,7 @@ async function refreshData() {
 </script>
 
 <template>
-  <div class="matcher-body">
+  <div class="matcher-body" id="main-content">
 
     <!-- Page nav -->
     <div class="matcher-topnav">
@@ -184,19 +184,22 @@ async function refreshData() {
         <span class="sep">·</span>
         <span class="page-title-sm">Anbud<em>matcher</em></span>
       </div>
-      <nav class="matcher-tabs">
+      <nav class="matcher-tabs" aria-label="Hovednavigasjon">
         <RouterLink to="/" exact-active-class="active" class="tab mono">Rapporter</RouterLink>
         <RouterLink to="/matcher" active-class="active" class="tab mono">Anbudsmatcher</RouterLink>
       </nav>
     </div>
 
     <!-- Toolbar -->
-    <div class="matcher-toolbar">
+    <div class="matcher-toolbar" role="search">
+      <label for="matcher-search" class="sr-only">Søk</label>
       <input
+        id="matcher-search"
         v-model="searchQuery"
         type="text"
         class="matcher-search mono"
         placeholder="Søk i rapporter, kunngjøringer, kjøpere..."
+        aria-label="Søk i rapporter, kunngjøringer og kjøpere"
       />
       <button
         class="chip"
@@ -270,7 +273,8 @@ async function refreshData() {
             <span
               class="sev-dot"
               :style="{ background: severityColor[report.severity] }"
-              :title="report.severity"
+              role="img"
+              :aria-label="report.severity"
             ></span>
 
             <span class="row-title">{{ report.title }}</span>
@@ -295,7 +299,7 @@ async function refreshData() {
 
             <span class="match-chip mono">{{ reportMatches.length }} treff</span>
 
-            <span class="chevron mono" :class="{ open: expandedIds.has(report.id) }">&#9662;</span>
+            <span class="chevron mono" :class="{ open: expandedIds.has(report.id) }" aria-hidden="true">&#9662;</span>
           </button>
 
           <!-- Expanded notice rows -->
@@ -449,7 +453,7 @@ async function refreshData() {
 }
 
 .rapport-link {
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
   color: var(--muted);
   text-decoration: none;
@@ -463,7 +467,7 @@ async function refreshData() {
 .rapport-link:hover { border-color: var(--muted); color: var(--text); }
 
 .badge {
-  font-size: 0.52rem;
+  font-size: 0.65rem;
   letter-spacing: 0.1em;
   border: 1px solid;
   padding: 0.2rem 0.5rem;
@@ -474,7 +478,7 @@ async function refreshData() {
 }
 
 .match-chip {
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   background: var(--surf2);
   border: 1px solid var(--border);
@@ -535,7 +539,7 @@ async function refreshData() {
 .notice-title:hover { color: #e63946; }
 
 .notice-meta {
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   display: flex;
   gap: 0.35rem;
@@ -552,7 +556,7 @@ async function refreshData() {
   margin: 0.35rem 0;
 }
 .score-label {
-  font-size: 0.58rem;
+  font-size: 0.7rem;
   letter-spacing: 0.06em;
 }
 .score-bar {
@@ -571,23 +575,22 @@ async function refreshData() {
 
 /* ── Matched org + keywords ─────────────────────────────────────────────── */
 .notice-org {
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   margin-top: 0.3rem;
 }
 
 .notice-desc {
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   line-height: 1.5;
   margin-top: 0.3rem;
   color: var(--muted);
-  opacity: 0.8;
 }
 
 .dept-label {
-  font-size: 0.52rem;
+  font-size: 0.65rem;
   letter-spacing: 0.06em;
-  color: var(--dim);
+  color: var(--muted);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -599,7 +602,7 @@ async function refreshData() {
   margin-top: 0.4rem;
 }
 .kw-tag {
-  font-size: 0.55rem;
+  font-size: 0.7rem;
   letter-spacing: 0.06em;
   padding: 0.15rem 0.45rem;
   background: var(--surf);
@@ -634,7 +637,7 @@ async function refreshData() {
   align-items: baseline;
   gap: 0.6rem;
 }
-.matcher-brand .mono { font-size: 0.62rem; letter-spacing: 0.16em; }
+.matcher-brand .mono { font-size: 0.75rem; letter-spacing: 0.16em; }
 .page-title-sm {
   font-family: 'Source Serif 4', Georgia, serif;
   font-size: 1.4rem;
@@ -659,13 +662,13 @@ async function refreshData() {
   border: 1px solid var(--border);
   border-radius: 2px;
   color: var(--text);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   letter-spacing: 0.04em;
   outline: none;
   transition: border-color 0.15s;
 }
 .matcher-search::placeholder { color: var(--dim); }
-.matcher-search:focus { border-color: var(--muted); }
+.matcher-search:focus { border-color: var(--muted); outline: 2px solid var(--focus); outline-offset: 1px; }
 
 /* ── Stats bar ─────────────────────────────────────────────────────────── */
 .stats-bar {
@@ -676,7 +679,7 @@ async function refreshData() {
   background: var(--surf2);
   border: 1px solid var(--border);
   border-radius: 2px;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
   color: var(--muted);
   margin-bottom: 1rem;
@@ -693,7 +696,7 @@ async function refreshData() {
   border-radius: 2px;
   color: var(--muted);
   font-family: 'Space Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   cursor: pointer;
   transition: all 0.15s ease;

@@ -103,7 +103,7 @@ function fmtDate(d) {
           <span class="sep">·</span>
           <h1 class="page-title">Rapport<em>oversikt</em></h1>
         </div>
-        <nav class="page-tabs">
+        <nav class="page-tabs" aria-label="Hovednavigasjon">
           <RouterLink to="/" exact-active-class="active" class="tab mono">Rapporter</RouterLink>
           <RouterLink to="/matcher" active-class="active" class="tab mono">Anbudsmatcher</RouterLink>
         </nav>
@@ -111,7 +111,7 @@ function fmtDate(d) {
     </div>
 
     <!-- ── DISTRIBUTION CHART ── -->
-    <div class="chart-section">
+    <section class="chart-section" aria-label="Fordeling av kritikkverdighet">
       <div class="chart-inner">
         <div class="chart-head">
           <span class="mono chart-title">FORDELING AV KRITIKKVERDIGHET</span>
@@ -119,7 +119,7 @@ function fmtDate(d) {
         </div>
 
         <!-- Stacked bar -->
-        <div class="chart-stack">
+        <div class="chart-stack" role="img" aria-label="Stablet søylediagram over kritikkverdighet">
           <div
             v-for="bar in chartBars" :key="bar.sev"
             class="stack-seg"
@@ -143,7 +143,7 @@ function fmtDate(d) {
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <div class="toolbar">
       <div class="toolbar-inner">
@@ -159,12 +159,12 @@ function fmtDate(d) {
         </div>
         <label class="searchbox">
           <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input v-model="searchQuery" placeholder="Søk tittel, departement…" />
+          <input v-model="searchQuery" placeholder="Søk tittel, departement…" aria-label="Søk i rapporter" />
         </label>
       </div>
     </div>
 
-    <main class="body">
+    <main id="main-content" class="body">
 
       <!-- Loading shimmer -->
       <template v-if="loading && !filtered.length">
@@ -195,7 +195,7 @@ function fmtDate(d) {
           <div class="grid">
             <article v-for="(r, i) in items" :key="r.id" class="card"
               :style="{ animationDelay: `${i * 50}ms` }">
-              <a :href="r.url" target="_blank" rel="noopener" class="card-link" :aria-label="r.title"></a>
+              <a :href="r.url" target="_blank" rel="noopener" class="card-link" :aria-label="`Les rapport: ${r.title}`"></a>
               <div class="card-stripe"></div>
               <div class="card-content">
                 <div class="card-top">
@@ -252,7 +252,7 @@ function fmtDate(d) {
   align-items: baseline;
   gap: 0.6rem;
 }
-.page-brand .mono { font-size: 0.62rem; letter-spacing: 0.16em; }
+.page-brand .mono { font-size: 0.75rem; letter-spacing: 0.16em; }
 .page-title {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.4rem;
@@ -280,8 +280,8 @@ function fmtDate(d) {
   align-items: center;
   margin-bottom: 1.25rem;
 }
-.chart-title { font-size: 0.62rem; letter-spacing: 0.16em; color: var(--muted); }
-.chart-total { font-size: 0.62rem; }
+.chart-title { font-size: 0.75rem; letter-spacing: 0.16em; color: var(--muted); }
+.chart-total { font-size: 0.75rem; }
 
 /* Stacked bar */
 .chart-stack {
@@ -309,7 +309,7 @@ function fmtDate(d) {
 }
 .bar-row.faded { opacity: 0.35; }
 .bar-row:hover { opacity: 1 !important; }
-.bar-label { font-size: 0.65rem; letter-spacing: 0.04em; color: var(--text); }
+.bar-label { font-size: 0.75rem; letter-spacing: 0.04em; color: var(--text); }
 .bar-track {
   height: 8px;
   background: var(--bg);
@@ -322,8 +322,8 @@ function fmtDate(d) {
   border-radius: 2px;
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.bar-count { font-size: 0.65rem; text-align: right; font-weight: 700; }
-.bar-pct   { font-size: 0.6rem; text-align: right; }
+.bar-count { font-size: 0.75rem; text-align: right; font-weight: 700; }
+.bar-pct   { font-size: 0.75rem; text-align: right; }
 
 /* ── TOOLBAR ────────────────────────────── */
 .toolbar {
@@ -357,7 +357,7 @@ function fmtDate(d) {
   border-radius: 2px;
   color: var(--muted);
   font-family: 'Space Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -373,8 +373,8 @@ function fmtDate(d) {
   background: var(--surf);
   border-radius: 2px;
   padding: 0.1rem 0.35rem;
-  font-size: 0.55rem;
-  color: var(--dim);
+  font-size: 0.7rem;
+  color: var(--muted);
 }
 
 .searchbox {
@@ -399,11 +399,11 @@ function fmtDate(d) {
   padding: 0.4rem 0.75rem 0.4rem 2.1rem;
   color: var(--text);
   font-family: 'Space Mono', monospace;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   outline: none;
   transition: border-color 0.15s;
 }
-.searchbox input:focus { border-color: var(--muted); }
+.searchbox input:focus { border-color: var(--muted); outline: 2px solid var(--focus); outline-offset: 1px; }
 .searchbox input::placeholder { color: var(--dim); }
 
 /* ── BODY ───────────────────────────────── */
@@ -475,8 +475,8 @@ function fmtDate(d) {
   border-radius: 1px;
   flex-shrink: 0;
 }
-.sev-label { font-size: 0.65rem; letter-spacing: 0.14em; color: var(--text); }
-.sev-count { font-size: 0.6rem; color: var(--muted); margin-left: auto; }
+.sev-label { font-size: 0.75rem; letter-spacing: 0.14em; color: var(--text); }
+.sev-count { font-size: 0.75rem; color: var(--muted); margin-left: auto; }
 
 /* ── GRID ───────────────────────────────── */
 .grid {
@@ -522,8 +522,8 @@ function fmtDate(d) {
   gap: 0.5rem;
   margin-bottom: 0.7rem;
 }
-.dept { font-size: 0.6rem; letter-spacing: 0.05em; color: var(--muted); flex: 1; line-height: 1.4; }
-.date { font-size: 0.58rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+.dept { font-size: 0.75rem; letter-spacing: 0.05em; color: var(--muted); flex: 1; line-height: 1.4; }
+.date { font-size: 0.75rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
 
 .card-title {
   font-family: 'Playfair Display', Georgia, serif;
@@ -552,7 +552,7 @@ function fmtDate(d) {
   z-index: 1;
 }
 .badge {
-  font-size: 0.52rem;
+  font-size: 0.65rem;
   letter-spacing: 0.1em;
   border: 1px solid;
   padding: 0.2rem 0.5rem;
@@ -560,7 +560,7 @@ function fmtDate(d) {
   opacity: 0.65;
 }
 .match-badge {
-  font-size: 0.52rem;
+  font-size: 0.65rem;
   letter-spacing: 0.08em;
   padding: 0.2rem 0.55rem;
   background: rgba(82, 121, 111, 0.08);
@@ -583,7 +583,7 @@ function fmtDate(d) {
   border-top: 1px solid var(--border);
   padding: 1.75rem 2rem;
   text-align: center;
-  font-size: 0.63rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   color: var(--dim);
   display: flex;
