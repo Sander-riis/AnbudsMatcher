@@ -519,13 +519,13 @@ function fmtDate(d) {
 .card-content { padding: 1.4rem 1.4rem 1rem; flex: 1; }
 .card-top {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.2rem 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
   margin-bottom: 0.7rem;
 }
-.dept { font-size: 0.75rem; letter-spacing: 0.05em; color: var(--muted); min-width: 0; line-height: 1.4; }
-.date { font-size: 0.75rem; color: var(--muted); white-space: nowrap; margin-left: auto; }
+.dept { font-size: 0.75rem; letter-spacing: 0.05em; color: var(--muted); line-height: 1.4; text-align: center; }
+.date { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
 
 .card-title {
   font-family: 'Playfair Display', Georgia, serif;
