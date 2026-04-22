@@ -639,14 +639,14 @@ async function refreshData() {
 }
 .matcher-brand .mono { font-size: 0.75rem; letter-spacing: 0.16em; }
 .page-title-sm {
-  font-family: 'Source Serif 4', Georgia, serif;
+  font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.4rem;
-  font-weight: 400;
+  font-weight: 900;
   letter-spacing: -0.01em;
   line-height: 1;
   color: var(--text);
 }
-.page-title-sm em { font-style: italic; color: #c5303b; }
+.page-title-sm em { font-style: italic; font-weight: 700; color: #c5303b; }
 .matcher-tabs { display: flex; gap: 0.25rem; }
 
 /* ── Matcher toolbar ───────────────────────────────────────────────────── */
