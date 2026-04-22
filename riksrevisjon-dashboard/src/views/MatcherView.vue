@@ -655,7 +655,7 @@ async function refreshData() {
   color: var(--text);
 }
 .page-title-sm em { font-style: italic; font-weight: 700; color: #c5303b; }
-.matcher-tabs { display: flex; gap: 0.25rem; }
+.matcher-tabs { display: flex; gap: 0.25rem; position: relative; z-index: 10; }
 
 /* ── Matcher toolbar ───────────────────────────────────────────────────── */
 .matcher-toolbar {
