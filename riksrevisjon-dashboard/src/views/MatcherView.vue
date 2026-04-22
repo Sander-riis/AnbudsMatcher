@@ -31,10 +31,10 @@ const severityOrder = {
 }
 
 const severityColor = {
-  'Sterkt kritikkverdig':   '#e63946',
-  'Kritikkverdig':          '#f4a261',
-  'Ikke tilfredsstillende': '#e9c46a',
-  'Ingen karakter':         '#52796f',
+  'Sterkt kritikkverdig':   '#c5303b',
+  'Kritikkverdig':          '#b87a2a',
+  'Ikke tilfredsstillende': '#9a7b1a',
+  'Ingen karakter':         '#3d6358',
 }
 
 // ── Data fetch ────────────────────────────────────────────────────────────
@@ -509,7 +509,7 @@ async function refreshData() {
   width: 36px;
   height: 36px;
   border: 2px solid var(--border);
-  border-top-color: #e63946;
+  border-top-color: #c5303b;
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }
@@ -645,7 +645,7 @@ async function refreshData() {
   letter-spacing: -0.01em;
   line-height: 1;
 }
-.page-title-sm em { font-style: italic; color: #e63946; }
+.page-title-sm em { font-style: italic; color: #c5303b; }
 .matcher-tabs { display: flex; gap: 0.25rem; }
 
 /* ── Matcher toolbar ───────────────────────────────────────────────────── */

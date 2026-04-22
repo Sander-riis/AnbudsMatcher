@@ -13,10 +13,10 @@ const searchQuery  = ref('')
 const filters = ['Alle', 'Sterkt kritikkverdig', 'Kritikkverdig', 'Ikke tilfredsstillende', 'Ingen karakter']
 
 const severityMeta = {
-  'Sterkt kritikkverdig':    { color: '#e63946', dim: 'rgba(230,57,70,0.12)'  },
-  'Kritikkverdig':           { color: '#f4a261', dim: 'rgba(244,162,97,0.10)' },
-  'Ikke tilfredsstillende':  { color: '#e9c46a', dim: 'rgba(233,196,106,0.09)'},
-  'Ingen karakter':          { color: '#52796f', dim: 'rgba(82,121,111,0.08)' },
+  'Sterkt kritikkverdig':    { color: '#c5303b', dim: 'rgba(197,48,59,0.12)'  },
+  'Kritikkverdig':           { color: '#b87a2a', dim: 'rgba(184,122,42,0.10)' },
+  'Ikke tilfredsstillende':  { color: '#9a7b1a', dim: 'rgba(154,123,26,0.09)'},
+  'Ingen karakter':          { color: '#3d6358', dim: 'rgba(61,99,88,0.08)' },
 }
 
 const severityOrder = { 'Sterkt kritikkverdig': 0, 'Kritikkverdig': 1, 'Ikke tilfredsstillende': 2, 'Ingen karakter': 3 }
@@ -260,7 +260,7 @@ function fmtDate(d) {
   letter-spacing: -0.01em;
   line-height: 1;
 }
-.page-title em { font-style: italic; font-weight: 700; color: #e63946; }
+.page-title em { font-style: italic; font-weight: 700; color: #c5303b; }
 .page-tabs { display: flex; gap: 0.25rem; }
 
 /* ── CHART ──────────────────────────────── */
@@ -425,7 +425,7 @@ function fmtDate(d) {
   width: 36px;
   height: 36px;
   border: 2px solid var(--border);
-  border-top-color: #e63946;
+  border-top-color: #c5303b;
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
 }
@@ -548,6 +548,7 @@ function fmtDate(d) {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  flex-wrap: nowrap;
   position: relative;
   z-index: 1;
 }
@@ -557,16 +558,16 @@ function fmtDate(d) {
   border: 1px solid;
   padding: 0.2rem 0.5rem;
   border-radius: 1px;
-  opacity: 0.65;
+  white-space: nowrap;
 }
 .match-badge {
   font-size: 0.65rem;
   letter-spacing: 0.08em;
   padding: 0.2rem 0.55rem;
-  background: rgba(82, 121, 111, 0.08);
-  border: 1px solid rgba(82, 121, 111, 0.35);
+  background: rgba(61, 99, 88, 0.08);
+  border: 1px solid rgba(61, 99, 88, 0.35);
   border-radius: 2px;
-  color: #52796f;
+  color: #3d6358;
   text-decoration: none;
   white-space: nowrap;
   flex-shrink: 0;
@@ -574,8 +575,8 @@ function fmtDate(d) {
   cursor: pointer;
 }
 .match-badge:hover {
-  background: rgba(82, 121, 111, 0.15);
-  border-color: #52796f;
+  background: rgba(61, 99, 88, 0.15);
+  border-color: #3d6358;
 }
 
 /* ── FOOTER ─────────────────────────────── */
