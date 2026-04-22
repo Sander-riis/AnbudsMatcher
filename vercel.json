@@ -1,0 +1,9 @@
+{
+  "framework": "vite",
+  "buildCommand": "cd riksrevisjon-dashboard && npm install && npm run build",
+  "outputDirectory": "riksrevisjon-dashboard/dist",
+  "rewrites": [
+    { "source": "/data/(.*)", "destination": "/data/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

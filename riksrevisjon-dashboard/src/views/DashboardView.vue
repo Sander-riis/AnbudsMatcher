@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
+import { loadAllData } from '../lib/dataLoader'
 
 const reports = ref([])
 const matches = ref([])
@@ -8,7 +9,6 @@ const notices = ref([])
 const loading = ref(true)
 const activeFilter = ref('Alle')
 const searchQuery  = ref('')
-let pollTimer = null
 
 const filters = ['Alle', 'Sterkt kritikkverdig', 'Kritikkverdig', 'Ikke tilfredsstillende', 'Ingen karakter']
 
@@ -22,26 +22,19 @@ const severityMeta = {
 const severityOrder = { 'Sterkt kritikkverdig': 0, 'Kritikkverdig': 1, 'Ikke tilfredsstillende': 2, 'Ingen karakter': 3 }
 
 async function fetchReports() {
-  const [rRes, mRes, nRes] = await Promise.all([
-    fetch('/api/reports'),
-    fetch('/api/matches'),
-    fetch('/api/notices'),
-  ])
-  const rData = await rRes.json()
-  const mData = await mRes.json()
-  const nData = await nRes.json()
-  reports.value  = rData.reports
-  matches.value  = mData.matches ?? []
-  notices.value  = nData.notices ?? []
-  if (rData.loading) {
-    pollTimer = setTimeout(fetchReports, 2000)
-  } else {
+  try {
+    const data = await loadAllData()
+    reports.value = data.reports
+    matches.value = data.matches
+    notices.value = data.notices
+  } catch {
+    // silent fail — static fallback already attempted
+  } finally {
     loading.value = false
   }
 }
 
 onMounted(() => fetchReports())
-onUnmounted(() => clearTimeout(pollTimer))
 
 const filtered = computed(() => {
   let list = reports.value

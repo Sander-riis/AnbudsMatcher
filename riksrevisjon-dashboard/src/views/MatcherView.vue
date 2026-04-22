@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
+import { loadAllData } from '../lib/dataLoader'
 
 // ── State ────────────────────────────────────────────────────────────────
 const reports    = ref([])
@@ -41,21 +42,10 @@ async function loadData() {
   loading.value = true
   error.value   = null
   try {
-    const [reportsRes, matchesRes, noticesRes] = await Promise.all([
-      fetch('/api/reports'),
-      fetch('/api/matches'),
-      fetch('/api/notices'),
-    ])
-    if (!reportsRes.ok) throw new Error(`/api/reports ${reportsRes.status}`)
-    if (!matchesRes.ok) throw new Error(`/api/matches ${matchesRes.status}`)
-    if (!noticesRes.ok) throw new Error(`/api/notices ${noticesRes.status}`)
-
-    const reportsData = await reportsRes.json()
-    const matchesData = await matchesRes.json()
-    const noticesData = await noticesRes.json()
-    reports.value = reportsData.reports   // API returns { loading, reports: [...] }
-    matches.value = matchesData.matches   // API returns { loading, matches: [...] }
-    notices.value = noticesData.notices   // API returns { loading, notices: [...] }
+    const data = await loadAllData()
+    reports.value = data.reports
+    matches.value = data.matches
+    notices.value = data.notices
   } catch (e) {
     error.value = e.message
   } finally {
