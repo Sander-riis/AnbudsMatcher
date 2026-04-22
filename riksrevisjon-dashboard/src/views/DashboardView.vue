@@ -259,6 +259,7 @@ function fmtDate(d) {
   font-weight: 900;
   letter-spacing: -0.01em;
   line-height: 1;
+  color: var(--text);
 }
 .page-title em { font-style: italic; font-weight: 700; color: #c5303b; }
 .page-tabs { display: flex; gap: 0.25rem; }

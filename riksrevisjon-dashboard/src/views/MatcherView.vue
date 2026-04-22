@@ -644,6 +644,7 @@ async function refreshData() {
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1;
+  color: var(--text);
 }
 .page-title-sm em { font-style: italic; color: #c5303b; }
 .matcher-tabs { display: flex; gap: 0.25rem; }
