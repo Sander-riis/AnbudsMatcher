@@ -1255,6 +1255,815 @@
       "matchedOrg": null,
       "matchedBigrams": null,
       "matchedTitleWords": null
+    },
+    {
+      "reportId": 37,
+      "noticeId": 2747,
+      "score": 84,
+      "matchedKeywords": [
+        "forvaltningsrevisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 48,
+      "noticeId": 1025,
+      "score": 95,
+      "matchedKeywords": [
+        "kommunale barnevernet",
+        "fagsystem"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 48,
+      "noticeId": 4402,
+      "score": 86,
+      "matchedKeywords": [
+        "barnevern",
+        "Bufetat",
+        "fosterhjem"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 53,
+      "noticeId": 572,
+      "score": 84,
+      "matchedKeywords": [
+        "regnskapsrevisjon",
+        "revisjonstjenester"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 53,
+      "noticeId": 2402,
+      "score": 83,
+      "matchedKeywords": [
+        "regnskapsrevisjon",
+        "revisjonstjenester"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 60,
+      "noticeId": 897,
+      "score": 82,
+      "matchedKeywords": [
+        "Samferdselsdepartementet",
+        "jernbanesektoren",
+        "styring"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 61,
+      "noticeId": 3290,
+      "score": 90,
+      "matchedKeywords": [
+        "vold i nære relasjoner",
+        "krisesenter"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 63,
+      "noticeId": 1762,
+      "score": 83,
+      "matchedKeywords": [
+        "klimatilpasning",
+        "teknisk infrastruktur",
+        "bebyggelse"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 69,
+      "noticeId": 699,
+      "score": 86,
+      "matchedKeywords": [
+        "årlig revisjon",
+        "revisjonstjenester"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 69,
+      "noticeId": 1997,
+      "score": 85,
+      "matchedKeywords": [
+        "årlig revisjon",
+        "revisjonstjenester"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 69,
+      "noticeId": 2320,
+      "score": 84,
+      "matchedKeywords": [
+        "revisjon",
+        "årsregnskap"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 77,
+      "noticeId": 4753,
+      "score": 88,
+      "matchedKeywords": [
+        "Nav",
+        "arbeidsrettet rehabilitering",
+        "tiltak"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 77,
+      "noticeId": 95,
+      "score": 87,
+      "matchedKeywords": [
+        "Nav",
+        "arbeidsmarkedstiltak",
+        "opplæring"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 77,
+      "noticeId": 2148,
+      "score": 86,
+      "matchedKeywords": [
+        "Nav",
+        "oppfølging",
+        "tiltak"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 77,
+      "noticeId": 3583,
+      "score": 86,
+      "matchedKeywords": [
+        "Nav",
+        "avklaring",
+        "tiltak"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 77,
+      "noticeId": 267,
+      "score": 85,
+      "matchedKeywords": [
+        "Nav",
+        "avklaring",
+        "tiltak"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 79,
+      "noticeId": 1909,
+      "score": 98,
+      "matchedKeywords": [
+        "Trygderetten",
+        "saks- og arkivsystem"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 85,
+      "noticeId": 2264,
+      "score": 92,
+      "matchedKeywords": [
+        "Bane NOR",
+        "investeringer",
+        "rådgivning"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 85,
+      "noticeId": 2267,
+      "score": 91,
+      "matchedKeywords": [
+        "Bane NOR",
+        "investeringer",
+        "rådgivning"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 85,
+      "noticeId": 2046,
+      "score": 90,
+      "matchedKeywords": [
+        "Bane NOR",
+        "jernbaneprosjekt",
+        "rådgiver"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 85,
+      "noticeId": 1705,
+      "score": 84,
+      "matchedKeywords": [
+        "Bane NOR",
+        "BIM",
+        "investeringer"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 90,
+      "noticeId": 4659,
+      "score": 76,
+      "matchedKeywords": [
+        "universit",
+        "høyskol",
+        "forskningssikkerhet",
+        "hk-dir"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 93,
+      "noticeId": 267,
+      "score": 82,
+      "matchedKeywords": [
+        "nav",
+        "arbeidsmarkedstiltak",
+        "avklaring"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 96,
+      "noticeId": 4770,
+      "score": 90,
+      "matchedKeywords": [
+        "statens vegvesen",
+        "inspeksjon",
+        "rekkverk"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 96,
+      "noticeId": 2977,
+      "score": 72,
+      "matchedKeywords": [
+        "statens vegvesen",
+        "driftskontrakt",
+        "installasjon",
+        "utstyr"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 101,
+      "noticeId": 1976,
+      "score": 92,
+      "matchedKeywords": [
+        "barnevernsinstitusjon",
+        "institusjonsbarnevernet",
+        "barne- og familiedepartementet"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 101,
+      "noticeId": 1670,
+      "score": 88,
+      "matchedKeywords": [
+        "institusjonsbarnevernet",
+        "barnevernsinstitusjon",
+        "barn"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 110,
+      "noticeId": 936,
+      "score": 82,
+      "matchedKeywords": [
+        "politiet",
+        "ikt",
+        "schengen"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 111,
+      "noticeId": 1263,
+      "score": 92,
+      "matchedKeywords": [
+        "utenriksdepartementet",
+        "informasjonssikkerhet",
+        "isms"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 134,
+      "noticeId": 1028,
+      "score": 78,
+      "matchedKeywords": [
+        "eldreomsorg",
+        "sykehjem",
+        "helse"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 139,
+      "noticeId": 2987,
+      "score": 90,
+      "matchedKeywords": [
+        "innsideinformasjon",
+        "innsidelister",
+        "forsvarsmateriell"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 145,
+      "noticeId": 4313,
+      "score": 78,
+      "matchedKeywords": [
+        "revisjon",
+        "internrevisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 145,
+      "noticeId": 46,
+      "score": 74,
+      "matchedKeywords": [
+        "revisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 145,
+      "noticeId": 1733,
+      "score": 74,
+      "matchedKeywords": [
+        "revisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 146,
+      "noticeId": 1263,
+      "score": 94,
+      "matchedKeywords": [
+        "styringssystem",
+        "informasjonssikkerhet",
+        "ISMS"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 152,
+      "noticeId": 1670,
+      "score": 84,
+      "matchedKeywords": [
+        "barnevernet",
+        "institusjonsbarnevernet"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 156,
+      "noticeId": 848,
+      "score": 96,
+      "matchedKeywords": [
+        "NAV",
+        "arbeidsmarkedstiltak",
+        "avklaring"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 156,
+      "noticeId": 122,
+      "score": 92,
+      "matchedKeywords": [
+        "NAV",
+        "arbeidsrettet",
+        "rehabilitering"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 156,
+      "noticeId": 267,
+      "score": 90,
+      "matchedKeywords": [
+        "NAV",
+        "avklaring",
+        "arbeidsmarkedstiltak"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 156,
+      "noticeId": 774,
+      "score": 89,
+      "matchedKeywords": [
+        "NAV",
+        "oppfølgingstiltak",
+        "arbeid"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 156,
+      "noticeId": 1249,
+      "score": 89,
+      "matchedKeywords": [
+        "NAV",
+        "avklaring",
+        "arbeid"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 166,
+      "noticeId": 1997,
+      "score": 77,
+      "matchedKeywords": [
+        "revisjon",
+        "årsregnskap"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 166,
+      "noticeId": 46,
+      "score": 73,
+      "matchedKeywords": [
+        "revisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 166,
+      "noticeId": 1733,
+      "score": 73,
+      "matchedKeywords": [
+        "revisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 178,
+      "noticeId": 2333,
+      "score": 95,
+      "matchedKeywords": [
+        "Sykehuspartner HF",
+        "IKT",
+        "Helse Sør-Øst"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 180,
+      "noticeId": 4366,
+      "score": 94,
+      "matchedKeywords": [
+        "Samferdselsdepartementet",
+        "posttjenester",
+        "Posten"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 180,
+      "noticeId": 1241,
+      "score": 92,
+      "matchedKeywords": [
+        "Samferdselsdepartementet",
+        "posttjenester",
+        "leveringsplikt"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 184,
+      "noticeId": 4313,
+      "score": 78,
+      "matchedKeywords": [
+        "revisjon",
+        "internrevisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 184,
+      "noticeId": 2747,
+      "score": 76,
+      "matchedKeywords": [
+        "forvaltningsrevisjon",
+        "revisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 184,
+      "noticeId": 46,
+      "score": 72,
+      "matchedKeywords": [
+        "revisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 187,
+      "noticeId": 3275,
+      "score": 82,
+      "matchedKeywords": [
+        "anskaffelser",
+        "regelverk",
+        "menneskerettigheter"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 193,
+      "noticeId": 234,
+      "score": 95,
+      "matchedKeywords": [
+        "økologisk",
+        "landbruk",
+        "strategi"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 194,
+      "noticeId": 1724,
+      "score": 88,
+      "matchedKeywords": [
+        "samhandling",
+        "helsetjenesten",
+        "kvalitet"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 194,
+      "noticeId": 2511,
+      "score": 83,
+      "matchedKeywords": [
+        "innføring",
+        "digital samhandling",
+        "helseteknologi"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 203,
+      "noticeId": 2789,
+      "score": 83,
+      "matchedKeywords": [
+        "medisinsk-teknisk utstyr"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 211,
+      "noticeId": 3760,
+      "score": 82,
+      "matchedKeywords": [
+        "beredskap",
+        "Hovedredningssentralen"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 217,
+      "noticeId": 1280,
+      "score": 76,
+      "matchedKeywords": [
+        "Statens vegvesen",
+        "anskaffelse"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 220,
+      "noticeId": 4811,
+      "score": 91,
+      "matchedKeywords": [
+        "Norsk Tipping"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 223,
+      "noticeId": 4002,
+      "score": 92,
+      "matchedKeywords": [
+        "pasientjournal",
+        "EPJ"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 223,
+      "noticeId": 587,
+      "score": 88,
+      "matchedKeywords": [
+        "pasientjournal",
+        "dokumentkontroll"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 227,
+      "noticeId": 1178,
+      "score": 85,
+      "matchedKeywords": [
+        "konsulentbistand",
+        "staten"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 227,
+      "noticeId": 2390,
+      "score": 84,
+      "matchedKeywords": [
+        "rådgivningstjenester",
+        "staten"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 227,
+      "noticeId": 2834,
+      "score": 86,
+      "matchedKeywords": [
+        "konsulenttjenester",
+        "IKT"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 243,
+      "noticeId": 2498,
+      "score": 84,
+      "matchedKeywords": [
+        "pedagogisk personell",
+        "barnehager"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 245,
+      "noticeId": 4541,
+      "score": 86,
+      "matchedKeywords": [
+        "fiskeri",
+        "Fiskeridirektoratet"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 248,
+      "noticeId": 3928,
+      "score": 94,
+      "matchedKeywords": [
+        "Arbeids- og velferdsetaten",
+        "internkontroll"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 253,
+      "noticeId": 4541,
+      "score": 88,
+      "matchedKeywords": [
+        "fiskeri",
+        "Fiskeridirektoratet"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 135,
+      "noticeId": 1724,
+      "score": 85,
+      "matchedKeywords": [
+        "spesialisthelsetjenesten",
+        "kvalitet"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 230,
+      "noticeId": 1733,
+      "score": 80,
+      "matchedKeywords": [
+        "revisjon",
+        "regnskap"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 240,
+      "noticeId": 1733,
+      "score": 80,
+      "matchedKeywords": [
+        "revisjon",
+        "regnskap"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 69,
+      "noticeId": 4313,
+      "score": 80,
+      "matchedKeywords": [
+        "revisjon",
+        "årslig"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 158,
+      "noticeId": 3204,
+      "score": 82,
+      "matchedKeywords": [
+        "helsenett",
+        "pasientjournal"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 158,
+      "noticeId": 3339,
+      "score": 78,
+      "matchedKeywords": [
+        "spesialisthelsetjenesten",
+        "effektivitet"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 94,
+      "noticeId": 3204,
+      "score": 76,
+      "matchedKeywords": [
+        "helsenett",
+        "pasientskade"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 152,
+      "noticeId": 2662,
+      "score": 82,
+      "matchedKeywords": [
+        "barnevernet",
+        "fagsystem"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 101,
+      "noticeId": 2662,
+      "score": 80,
+      "matchedKeywords": [
+        "barnevernet",
+        "fagsystem"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 193,
+      "noticeId": 1109,
+      "score": 82,
+      "matchedKeywords": [
+        "landbruk",
+        "revisjon"
+      ],
+      "matchedOrg": ""
+    },
+    {
+      "reportId": 222,
+      "noticeId": 4659,
+      "score": 76,
+      "matchedKeywords": [
+        "universiteter",
+        "høyskoler"
+      ],
+      "matchedOrg": ""
     }
   ]
 }
