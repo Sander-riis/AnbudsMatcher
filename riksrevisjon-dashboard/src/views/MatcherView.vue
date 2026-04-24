@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { loadAllData } from '../lib/dataLoader'
+import { IT_REPORT_IDS } from '../lib/itReportIds'
 
 // ── State ────────────────────────────────────────────────────────────────
 const reports    = ref([])
@@ -12,6 +13,7 @@ const error      = ref(null)
 const refreshing = ref(false)
 const expandedIds = ref(new Set())
 const searchQuery = ref('')
+const itOnly      = ref(false)
 
 // ── Router / URL filter ───────────────────────────────────────────────────
 const route  = useRoute()
@@ -92,6 +94,7 @@ const matchedReports = computed(() => {
   for (const [reportId, reportMatches] of matchesByReport.value) {
     const report = reportMap.value.get(reportId)
     if (!report) continue
+    if (itOnly.value && !IT_REPORT_IDS.has(reportId)) continue
     result.push({ report, matches: reportMatches })
   }
 
@@ -204,6 +207,13 @@ async function refreshData() {
         placeholder="Søk i rapporter, kunngjøringer, kjøpere..."
         aria-label="Søk i rapporter, kunngjøringer og kjøpere"
       />
+      <button
+        class="chip"
+        :class="{ active: itOnly }"
+        @click="itOnly = !itOnly"
+      >
+        <span>🖥 Kun IT-rapporter</span>
+      </button>
       <button
         class="chip"
         :disabled="refreshing || loading"

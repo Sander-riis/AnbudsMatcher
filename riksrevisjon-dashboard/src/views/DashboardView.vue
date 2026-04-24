@@ -2,12 +2,14 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { loadAllData } from '../lib/dataLoader'
+import { IT_REPORT_IDS } from '../lib/itReportIds'
 
 const reports = ref([])
 const matches = ref([])
 const notices = ref([])
 const loading = ref(true)
 const activeFilter = ref('Alle')
+const itOnly = ref(false)
 const searchQuery  = ref('')
 
 const filters = ['Alle', 'Sterkt kritikkverdig', 'Kritikkverdig', 'Ikke tilfredsstillende', 'Ingen karakter']
@@ -38,6 +40,7 @@ onMounted(() => fetchReports())
 
 const filtered = computed(() => {
   let list = reports.value
+  if (itOnly.value) list = list.filter(r => IT_REPORT_IDS.has(r.id))
   if (activeFilter.value !== 'Alle') list = list.filter(r => r.severity === activeFilter.value)
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.toLowerCase()
@@ -60,9 +63,10 @@ const grouped = computed(() => {
 })
 
 const counts = computed(() => {
+  const base = itOnly.value ? reports.value.filter(r => IT_REPORT_IDS.has(r.id)) : reports.value
   const c = {}
   for (const f of filters) {
-    c[f] = f === 'Alle' ? reports.value.length : reports.value.filter(r => r.severity === f).length
+    c[f] = f === 'Alle' ? base.length : base.filter(r => r.severity === f).length
   }
   return c
 })
@@ -157,10 +161,16 @@ function fmtDate(d) {
             <em class="chip-n">{{ counts[f] }}</em>
           </button>
         </div>
-        <label class="searchbox">
+        <div class="toolbar-right">
+          <button class="chip" :class="{ active: itOnly }" @click="itOnly = !itOnly">
+            <span>🖥 Kun IT-rapporter</span>
+            <em v-if="itOnly" class="chip-n">{{ IT_REPORT_IDS.size }}</em>
+          </button>
+          <label class="searchbox">
           <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           <input v-model="searchQuery" placeholder="Søk tittel, departement…" aria-label="Søk i rapporter" />
         </label>
+        </div>
       </div>
     </div>
 
